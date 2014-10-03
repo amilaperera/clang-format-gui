@@ -7,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // initialize model
+    // formatOptionsModel = new FormatOptionsStandardItemModel(this);
+    // initializeFormatOptionsModel();
+
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
     ui->verticalLayout_2->addWidget(originalSrcTextEdit);
@@ -48,6 +52,11 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
 }
 
+void MainWindow::initializeFormatOptionsModel()
+{
+    ui->formatOptionsTreeView->setModel(formatOptionsModel);
+}
+
 void MainWindow::on_openOriginalSrcToolButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -57,8 +66,9 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 
     if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
         // open file name in the preview text area
-        if (previewer)
+        if (previewer) {
             delete previewer;
+        }
 
         previewer = new SrcFilePreviewer(fileName);
         previewer->ShowPreview(originalSrcTextEdit);
@@ -68,8 +78,9 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 {
     // if the user clicks on formatted src preview tab we disable open button
-    if (index == 1)
+    if (index == 1) {
         ui->openOriginalSrcToolButton->setEnabled(false);
-    else
+    } else {
         ui->openOriginalSrcToolButton->setEnabled(true);
+    }
 }

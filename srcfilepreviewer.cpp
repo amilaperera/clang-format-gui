@@ -1,4 +1,4 @@
-#include "srcfilepreviewer.h"
+#include "SrcFilePreviewer.h"
 
 SrcFilePreviewer::SrcFilePreviewer(const QString &f, QObject *parent) :
     QObject(parent)
@@ -35,8 +35,9 @@ void SrcFilePreviewer::ShowPreview(QsciScintilla *textEdit)
 QString SrcFilePreviewer::getFileNameExtension()
 {
     QString ext = "";
-    if (!fileName.isEmpty())
+    if (!fileName.isEmpty()) {
         ext = fileName.section('.', -1);
+    }
     return ext;
 }
 
@@ -47,8 +48,10 @@ QsciLexer *SrcFilePreviewer::createLexer()
         fileExt == "cc" ||
         fileExt == "c++" ||
         fileExt == "h" ||
-        fileExt == "hpp")
+        fileExt == "hpp") {
+
         return new QsciLexerCPP(this);
+    }
 
     return nullptr;
 }

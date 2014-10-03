@@ -14,11 +14,11 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    srcfilepreviewer.cpp
+    FormatOptionsStandardItemModel.cpp \
+    MainWindow.cpp \
+    SrcFilePreviewer.cpp
 
-HEADERS  += mainwindow.h \
-    srcfilepreviewer.h \
+HEADERS  += \
     Qsci/qsciabstractapis.h \
     Qsci/qsciapis.h \
     Qsci/qscicommand.h \
@@ -68,7 +68,10 @@ HEADERS  += mainwindow.h \
     Qsci/qsciscintilla.h \
     Qsci/qsciscintillabase.h \
     Qsci/qscistyle.h \
-    Qsci/qscistyledtext.h
+    Qsci/qscistyledtext.h \
+    FormatOptionsStandardItemModel.h \
+    MainWindow.h \
+    SrcFilePreviewer.h
 
 FORMS    += mainwindow.ui
 
