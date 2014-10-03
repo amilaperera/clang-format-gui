@@ -7,14 +7,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // set QsciScintilla widget in the orignal source tab
+    // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
     ui->verticalLayout_2->addWidget(originalSrcTextEdit);
 
-    // set QsciScintilla widget in the formatted source tab
+    // set QSciScintilla widget in the formatted source tab
     formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
     ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
 
+    // initialize QScintilla text edit widgets with certain common properties
     initializeSrcTextEdit(originalSrcTextEdit);
     initializeSrcTextEdit(formattedSrcTextEdit);
 
@@ -43,7 +44,7 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
 {
     // make the editor read only
     textEdit->setReadOnly(true);
-    // make the whitesplaces visible with a centered dot
+    // make the whitespaces visible with a centered dot
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
 }
 
