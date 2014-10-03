@@ -23,13 +23,22 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTreeView" name="formatOptionsTreeView">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QTreeWidget" name="formatOptionsTreeWidget">
+       <column>
+        <property name="text">
+         <string>Format Options</string>
+        </property>
+       </column>
+       <item>
+        <property name="text">
+         <string>Style</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dummy1</string>
+        </property>
+       </item>
       </widget>
       <widget class="QSplitter" name="splitter">
        <property name="orientation">

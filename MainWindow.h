@@ -28,6 +28,8 @@ private slots:
 
     void on_srcPreviewTabWidget_currentChanged(int index);
 
+    void on_formatOptionsTreeWidget_clicked(const QModelIndex &index);
+
 private:
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;

@@ -75,3 +75,11 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
         ui->openOriginalSrcToolButton->setEnabled(true);
     }
 }
+
+void MainWindow::on_formatOptionsTreeWidget_clicked(const QModelIndex &index)
+{
+    // set the group box title formatOptionsGroupBox title according
+    // to the item being clicked in the tree view
+    QString formatOptoinsGroupBoxTitle = index.data().toString() + " Options";
+    ui->formatOptionsGroupBox->setTitle(formatOptoinsGroupBoxTitle);
+}
