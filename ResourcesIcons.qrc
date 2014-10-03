@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/document-new-6.png</file>
+    </qresource>
+</RCC>
