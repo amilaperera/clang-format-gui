@@ -9,7 +9,6 @@
 #include <QFont>
 #include <Qsci/qsciscintilla.h>
 
-#include "FormatOptionsStandardItemModel.h"
 #include "SrcFilePreviewer.h"
 
 namespace Ui {
@@ -35,11 +34,9 @@ private:
     SrcFilePreviewer *previewer;
     Ui::MainWindow *ui;
     QString defaultFileOpenDir;
-    FormatOptionsStandardItemModel *formatOptionsModel;
 
 private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);
-    void initializeFormatOptionsModel();
 };
 
 #endif // MAINWINDOW_H

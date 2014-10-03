@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -6,10 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    // initialize model
-    // formatOptionsModel = new FormatOptionsStandardItemModel(this);
-    // initializeFormatOptionsModel();
 
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
@@ -50,11 +46,6 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
     textEdit->setReadOnly(true);
     // make the whitespaces visible with a centered dot
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
-}
-
-void MainWindow::initializeFormatOptionsModel()
-{
-    ui->formatOptionsTreeView->setModel(formatOptionsModel);
 }
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()

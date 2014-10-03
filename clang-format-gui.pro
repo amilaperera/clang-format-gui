@@ -14,7 +14,6 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-    FormatOptionsStandardItemModel.cpp \
     MainWindow.cpp \
     SrcFilePreviewer.cpp
 
@@ -69,7 +68,6 @@ HEADERS  += \
     Qsci/qsciscintillabase.h \
     Qsci/qscistyle.h \
     Qsci/qscistyledtext.h \
-    FormatOptionsStandardItemModel.h \
     MainWindow.h \
     SrcFilePreviewer.h
 
