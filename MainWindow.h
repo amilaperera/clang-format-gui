@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QFont>
+#include <QTreeWidget>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -28,7 +29,7 @@ private slots:
 
     void on_srcPreviewTabWidget_currentChanged(int index);
 
-    void on_formatOptionsTreeWidget_clicked(const QModelIndex &index);
+    void on_formatOptionsTreeWidget_itemActivated(QTreeWidgetItem *item, int column);
 
 private:
     QsciScintilla *originalSrcTextEdit;
