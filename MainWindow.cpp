@@ -76,7 +76,8 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
     }
 }
 
-void MainWindow::on_formatOptionsTreeWidget_itemActivated(QTreeWidgetItem *item, int column)
+void MainWindow::on_formatOptionsTreeWidget_itemActivated(QTreeWidgetItem *item,
+                                                          int column)
 {
     // since the treewidget contains just one column, set column to 0
     column = 0;
@@ -85,8 +86,8 @@ void MainWindow::on_formatOptionsTreeWidget_itemActivated(QTreeWidgetItem *item,
     // to the item being clicked in the tree view
     QString formatOptoinsGroupBoxTitle = item->text(column);
 
-    // if the item being clicked already contains "Options" in its name
-    // then don't append "Options" to the name (e.g: Format Options)
+    // if the item being clicked does not contain "Options" in its name
+    // then append "Options" to the name (e.g: Style => Style Options)
     if (!item->text(column).contains("Options")) {
         formatOptoinsGroupBoxTitle += " Options";
     }
