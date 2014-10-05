@@ -24,20 +24,43 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QTreeWidget" name="formatOptionsTreeWidget">
+       <property name="indentation">
+        <number>10</number>
+       </property>
+       <property name="animated">
+        <bool>true</bool>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerCascadingSectionResizes">
+        <bool>false</bool>
+       </attribute>
        <column>
         <property name="text">
-         <string>Format Options</string>
+         <string/>
         </property>
        </column>
        <item>
         <property name="text">
-         <string>Style</string>
+         <string>Format Options</string>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dummy1</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>Style</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dummy1</string>
+         </property>
+        </item>
        </item>
       </widget>
       <widget class="QSplitter" name="splitter">
@@ -131,7 +154,7 @@
      <x>0</x>
      <y>0</y>
      <width>1034</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

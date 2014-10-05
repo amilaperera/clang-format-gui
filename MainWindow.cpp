@@ -80,6 +80,13 @@ void MainWindow::on_formatOptionsTreeWidget_clicked(const QModelIndex &index)
 {
     // set the group box title formatOptionsGroupBox title according
     // to the item being clicked in the tree view
-    QString formatOptoinsGroupBoxTitle = index.data().toString() + " Options";
+    QString formatOptoinsGroupBoxTitle = index.data().toString();
+
+    // if the item being clicked already contains "Options" in its name
+    // then don't append "Options" to the name (e.g: Format Options)
+    if (!index.data().toString().contains("Options")) {
+        formatOptoinsGroupBoxTitle += " Options";
+    }
+
     ui->formatOptionsGroupBox->setTitle(formatOptoinsGroupBoxTitle);
 }
