@@ -81,6 +81,7 @@ win32 {
 }
 
 unix {
+    LIBS += -L/usr/lib/x86_64-linux-gnu -lqscintilla2
     CONFIG += qscintilla2
 }
 
