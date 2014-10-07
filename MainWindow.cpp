@@ -86,14 +86,18 @@ void MainWindow::on_formatOptionsTreeWidget_currentItemChanged(QTreeWidgetItem *
         return;
     }
 
+    // get the current selected item name
+    QString currentSelectedFormatOption = current->text(column);
+
     // set the group box title formatOptionsGroupBox title according
     // to the item being clicked in the tree view
-    QString formatOptionsGroupBoxTitle = current->text(column);
+    QString formatOptionsGroupBoxTitle = currentSelectedFormatOption;
 
     // if the item being clicked does not contain "Options" in its name
     // then append "Options" to the name (e.g: Style => Style Options)
     if (!formatOptionsGroupBoxTitle.contains("Options")) {
         formatOptionsGroupBoxTitle += " Options";
     }
+
     ui->formatOptionsGroupBox->setTitle(formatOptionsGroupBoxTitle);
 }
