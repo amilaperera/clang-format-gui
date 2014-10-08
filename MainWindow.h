@@ -29,8 +29,6 @@ private slots:
 
     void on_srcPreviewTabWidget_currentChanged(int index);
 
-    void on_formatOptionsTreeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-
 private:
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;

@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->srcPreviewTabWidget->setCurrentIndex(0);
 
     // TODO: revisit initial strecthing proportions of the splits
-    ui->splitter_2->setStretchFactor(1, 10);
+    ui->splitter_2->setStretchFactor(1, 40);
 
     qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 }
@@ -74,30 +74,4 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
     } else {
         ui->openOriginalSrcToolButton->setEnabled(true);
     }
-}
-
-void MainWindow::on_formatOptionsTreeWidget_currentItemChanged(QTreeWidgetItem *current,
-                                                               QTreeWidgetItem *previous)
-{
-    const int column = 0;
-
-    // if the current item is unchanged, just don't do anything
-    if (current == previous) {
-        return;
-    }
-
-    // get the current selected item name
-    QString currentSelectedFormatOption = current->text(column);
-
-    // set the group box title formatOptionsGroupBox title according
-    // to the item being clicked in the tree view
-    QString formatOptionsGroupBoxTitle = currentSelectedFormatOption;
-
-    // if the item being clicked does not contain "Options" in its name
-    // then append "Options" to the name (e.g: Style => Style Options)
-    if (!formatOptionsGroupBoxTitle.contains("Options")) {
-        formatOptionsGroupBoxTitle += " Options";
-    }
-
-    ui->formatOptionsGroupBox->setTitle(formatOptionsGroupBoxTitle);
 }
