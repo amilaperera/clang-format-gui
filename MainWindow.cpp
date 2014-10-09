@@ -19,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     initializeSrcTextEdit(originalSrcTextEdit);
     initializeSrcTextEdit(formattedSrcTextEdit);
 
+    // set initial splitter sizes appropriately
+    setInitialSplitSizes();
+
+    // set initial list widget & stack widget settings
+    initializeFormatOptionsWidget();
+
     // FIXME: Should we really do this with QStandardPaths?
     // initialize to home directory of the current user
     defaultFileOpenDir = QDir::homePath();
@@ -26,9 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // set focus to original source preview tab
     ui->srcPreviewTabWidget->setCurrentIndex(0);
-
-    // TODO: revisit initial strecthing proportions of the splits
-    ui->splitter_2->setStretchFactor(1, 40);
 
     qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 }
@@ -46,6 +49,22 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
     textEdit->setReadOnly(true);
     // make the whitespaces visible with a centered dot
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
+}
+
+void MainWindow::setInitialSplitSizes()
+{
+    QList<int> splitter_2_sizes;
+    splitter_2_sizes << 150 << 600;
+    ui->splitter_2->setSizes(splitter_2_sizes);
+
+    QList<int> splitter_sizes;
+    splitter_sizes << 300 << 300;
+    ui->splitter->setSizes(splitter_sizes);
+}
+
+void MainWindow::initializeFormatOptionsWidget()
+{
+    ui->formatOptionsListWidget->item(0)->setSelected(true);
 }
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()

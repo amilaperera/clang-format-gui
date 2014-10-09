@@ -38,6 +38,8 @@ private:
 
 private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);
+    void setInitialSplitSizes();
+    void initializeFormatOptionsWidget();
 };
 
 #endif // MAINWINDOW_H

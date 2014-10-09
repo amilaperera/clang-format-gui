@@ -29,7 +29,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QListWidget" name="formatOptionsListWidget">
           <item>
            <property name="text">
             <string>Style</string>
@@ -57,12 +57,12 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QStackedWidget" name="stackedWidget">
+          <widget class="QStackedWidget" name="detailsStackWidget">
            <property name="currentIndex">
             <number>0</number>
            </property>
            <widget class="QWidget" name="styleOptionsPage">
-            <widget class="QWidget" name="">
+            <widget class="QWidget" name="layoutWidget">
              <property name="geometry">
               <rect>
                <x>0</x>
@@ -194,7 +194,7 @@
      <x>0</x>
      <y>0</y>
      <width>869</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -214,9 +214,9 @@
  </resources>
  <connections>
   <connection>
-   <sender>listWidget</sender>
+   <sender>formatOptionsListWidget</sender>
    <signal>currentRowChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
+   <receiver>detailsStackWidget</receiver>
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
