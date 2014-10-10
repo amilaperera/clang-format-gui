@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
     ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
 
+    // set original file name to empty string
+    originalFileName = "";
+
     // initialize QScintilla text edit widgets with certain common properties
     initializeSrcTextEdit(originalSrcTextEdit);
     initializeSrcTextEdit(formattedSrcTextEdit);
@@ -95,8 +98,12 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
             delete previewer;
         }
 
+        originalFileName = fileName;
         previewer = new SrcFilePreviewer(fileName);
         previewer->ShowPreview(originalSrcTextEdit);
+
+        // TODO: revisit this.
+        // A signal may not be necessary
         emit originalSrcLoaded();
     }
 }
@@ -114,4 +121,11 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 void MainWindow::on_originalSrcLoaded()
 {
     setStyleOptions(true);
+}
+
+void MainWindow::on_llvmStyleRButton_toggled(bool checked)
+{
+    if (checked) {
+        ui->srcPreviewTabWidget->setCurrentIndex(1);
+    }
 }

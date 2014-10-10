@@ -30,12 +30,15 @@ private slots:
     void on_srcPreviewTabWidget_currentChanged(int index);
     void on_originalSrcLoaded();
 
+    void on_llvmStyleRButton_toggled(bool checked);
+
 signals:
     void originalSrcLoaded();
 
 private:
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
+    QString originalFileName;
     SrcFilePreviewer *previewer;
     Ui::MainWindow *ui;
     QString defaultFileOpenDir;
