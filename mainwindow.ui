@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>869</width>
-    <height>481</height>
+    <width>757</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,10 +34,16 @@
            <property name="text">
             <string>Style</string>
            </property>
+           <property name="toolTip">
+            <string>Set Style options</string>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Comments</string>
+           </property>
+           <property name="toolTip">
+            <string>Set Comment options</string>
            </property>
           </item>
          </widget>
@@ -94,7 +100,7 @@
                </widget>
               </item>
               <item row="3" column="0">
-               <widget class="QRadioButton" name="MozillaStyleRButton">
+               <widget class="QRadioButton" name="mozillaStyleRButton">
                 <property name="text">
                  <string>Mozilla's style guide</string>
                 </property>
@@ -193,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>869</width>
+     <width>757</width>
      <height>21</height>
     </rect>
    </property>

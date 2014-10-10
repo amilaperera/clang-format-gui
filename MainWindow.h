@@ -28,6 +28,10 @@ private slots:
     void on_openOriginalSrcToolButton_clicked();
 
     void on_srcPreviewTabWidget_currentChanged(int index);
+    void on_originalSrcLoaded();
+
+signals:
+    void originalSrcLoaded();
 
 private:
     QsciScintilla *originalSrcTextEdit;
@@ -40,6 +44,7 @@ private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void initializeFormatOptionsWidget();
+    void setStyleOptions(bool enableStatus);
 };
 
 #endif // MAINWINDOW_H

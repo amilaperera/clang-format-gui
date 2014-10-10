@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // set focus to original source preview tab
     ui->srcPreviewTabWidget->setCurrentIndex(0);
 
+    connect(this, SIGNAL(originalSrcLoaded()), this, SLOT(on_originalSrcLoaded()));
+
     qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 }
 
@@ -64,7 +66,20 @@ void MainWindow::setInitialSplitSizes()
 
 void MainWindow::initializeFormatOptionsWidget()
 {
+    // set 1 st item in the list widget selected at startup
     ui->formatOptionsListWidget->item(0)->setSelected(true);
+
+    // we disable style options settings at startup
+    setStyleOptions(false);
+}
+
+void MainWindow::setStyleOptions(bool enableStatus)
+{
+    ui->llvmStyleRButton->setEnabled(enableStatus);
+    ui->googleStyleRButton->setEnabled(enableStatus);
+    ui->chromiumStyleRButton->setEnabled(enableStatus);
+    ui->mozillaStyleRButton->setEnabled(enableStatus);
+    ui->webkitStyleRButton->setEnabled(enableStatus);
 }
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()
@@ -82,6 +97,7 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 
         previewer = new SrcFilePreviewer(fileName);
         previewer->ShowPreview(originalSrcTextEdit);
+        emit originalSrcLoaded();
     }
 }
 
@@ -93,4 +109,9 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
     } else {
         ui->openOriginalSrcToolButton->setEnabled(true);
     }
+}
+
+void MainWindow::on_originalSrcLoaded()
+{
+    setStyleOptions(true);
 }
