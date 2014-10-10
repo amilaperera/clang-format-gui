@@ -11,6 +11,8 @@
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
+#include "ClangFormatCommand.h"
+#include "ClangFormatter.h"
 
 namespace Ui {
 class MainWindow;
@@ -38,8 +40,8 @@ signals:
 private:
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
-    QString originalFileName;
-    SrcFilePreviewer *previewer;
+    SrcFilePreviewer *originalSrcPreviewer;
+    SrcFilePreviewer *formattedSrcPreviewer;
     Ui::MainWindow *ui;
     QString defaultFileOpenDir;
 

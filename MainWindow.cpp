@@ -15,12 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
     formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
     ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
 
-    // set original file name to empty string
-    originalFileName = "";
-
     // initialize QScintilla text edit widgets with certain common properties
     initializeSrcTextEdit(originalSrcTextEdit);
     initializeSrcTextEdit(formattedSrcTextEdit);
+
+    // initialize SrcFilePreviewer objects
+    originalSrcPreviewer = nullptr;
+    formattedSrcPreviewer = nullptr;
 
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
@@ -31,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // FIXME: Should we really do this with QStandardPaths?
     // initialize to home directory of the current user
     defaultFileOpenDir = QDir::homePath();
-    previewer = nullptr;
 
     // set focus to original source preview tab
     ui->srcPreviewTabWidget->setCurrentIndex(0);
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     // NOTE: QSciScintilla objects will be deleted by ownership concept
-    delete previewer;
+    delete originalSrcPreviewer;
     delete ui;
 }
 
@@ -94,13 +94,12 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 
     if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
         // open file name in the preview text area
-        if (previewer) {
-            delete previewer;
+        if (originalSrcPreviewer) {
+            delete originalSrcPreviewer;
         }
 
-        originalFileName = fileName;
-        previewer = new SrcFilePreviewer(fileName);
-        previewer->ShowPreview(originalSrcTextEdit);
+        originalSrcPreviewer = new SrcFilePreviewer(fileName);
+        originalSrcPreviewer->ShowPreview(originalSrcTextEdit);
 
         // TODO: revisit this.
         // A signal may not be necessary
@@ -127,5 +126,22 @@ void MainWindow::on_llvmStyleRButton_toggled(bool checked)
 {
     if (checked) {
         ui->srcPreviewTabWidget->setCurrentIndex(1);
+        ClangFormatCommand cmd(originalSrcPreviewer->GetFileName());
+        cmd.SetStyle("llvm");
+
+        ClangFormatter clangFormatter(&cmd);
+        if (clangFormatter.Execute()) {
+            qDebug() << "clangFormatter process executed successfully";
+        } else {
+            qDebug() << "clangFormatter process execution failed";
+        }
+
+        if (formattedSrcPreviewer) {
+            delete formattedSrcPreviewer;
+        }
+
+        formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
+                                                     clangFormatter.GetOutput());
+        formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
     }
 }

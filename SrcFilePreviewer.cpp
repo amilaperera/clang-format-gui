@@ -15,9 +15,25 @@ SrcFilePreviewer::SrcFilePreviewer(const QString &f, QObject *parent) :
 
         fileExt = getFileNameExtension();
         lexer = createLexer();
+        if (!lexer) {
+            // TODO: handle error
+            // Probably we should throw an exception
+        }
 
         qDebug() << "File Name: " << fileName;
         qDebug() << "File Ext: " << fileExt;
+    }
+}
+
+SrcFilePreviewer::SrcFilePreviewer(const QString &fExt, const QString &fContent,
+                                   QObject *parent) : QObject(parent)
+{
+    fileExt = fExt;
+    fileContent = fContent;
+    lexer = createLexer();
+    if (!lexer) {
+        // TODO: handle error
+        // Probably we should throw an exception
     }
 }
 
@@ -28,8 +44,28 @@ SrcFilePreviewer::~SrcFilePreviewer()
 
 void SrcFilePreviewer::ShowPreview(QsciScintilla *textEdit)
 {
-    textEdit->setLexer(lexer);
-    textEdit->setText(fileContent);
+    if (lexer) {
+        textEdit->setLexer(lexer);
+        textEdit->setText(fileContent);
+    } else {
+        // TODO: consider throwing an exception
+        qDebug() << "Can't show preview because, the file extension is unrecognized by the application";
+    }
+}
+
+QString SrcFilePreviewer::GetFileName()
+{
+    return fileName;
+}
+
+QString SrcFilePreviewer::GetFileNameExtension()
+{
+    return getFileNameExtension();
+}
+
+QString SrcFilePreviewer::GetFileContent()
+{
+    return fileContent;
 }
 
 QString SrcFilePreviewer::getFileNameExtension()

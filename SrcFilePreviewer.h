@@ -15,8 +15,13 @@ class SrcFilePreviewer : public QObject
     Q_OBJECT
 public:
     explicit SrcFilePreviewer(const QString &f, QObject *parent = 0);
+    explicit SrcFilePreviewer(const QString &fExt, const QString &fContent,
+                              QObject *parent = 0);
     ~SrcFilePreviewer();
     void ShowPreview(QsciScintilla *textEdit);
+    QString GetFileName();
+    QString GetFileNameExtension();
+    QString GetFileContent();
 
 signals:
 

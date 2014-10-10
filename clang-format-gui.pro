@@ -15,7 +15,9 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
     MainWindow.cpp \
-    SrcFilePreviewer.cpp
+    SrcFilePreviewer.cpp \
+    ClangFormatCommand.cpp \
+    ClangFormatter.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -69,7 +71,9 @@ HEADERS  += \
     Qsci/qscistyle.h \
     Qsci/qscistyledtext.h \
     MainWindow.h \
-    SrcFilePreviewer.h
+    SrcFilePreviewer.h \
+    ClangFormatCommand.h \
+    ClangFormatter.h
 
 FORMS    += mainwindow.ui
 
