@@ -16,8 +16,9 @@ public:
     };
 
     explicit FormatOptions(QObject *parent = 0);
+    void Clear();
     void SetStyle(Style s);
-    Style GetStyle() const;
+    FormatOptions::Style GetStyle() const;
 
 signals:
 

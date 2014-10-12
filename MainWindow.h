@@ -13,6 +13,7 @@
 #include "SrcFilePreviewer.h"
 #include "ClangFormatCommand.h"
 #include "ClangFormatter.h"
+#include "FormatOptions.h"
 
 namespace Ui {
 class MainWindow;
@@ -48,6 +49,7 @@ private:
     SrcFilePreviewer *formattedSrcPreviewer;
     Ui::MainWindow *ui;
     QString defaultFileOpenDir;
+    FormatOptions *formatOptions;
 
 private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);

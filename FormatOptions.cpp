@@ -3,6 +3,11 @@
 FormatOptions::FormatOptions(QObject *parent) :
     QObject(parent)
 {
+    Clear();
+}
+
+void FormatOptions::Clear()
+{
     style = LLVM;
 }
 

@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // set focus to original source preview tab
     changeToOriginalSrcTab();
 
+    // create initialized formatOptions instance
+    formatOptions = new FormatOptions(this);
+
     connect(this, SIGNAL(originalSrcLoaded()), this, SLOT(on_originalSrcLoaded()));
 
     qDebug() << "Default Direcotory: " << defaultFileOpenDir;
@@ -125,9 +128,11 @@ void MainWindow::changeStyle(const QString &style)
 
     ClangFormatter clangFormatter;
     if (clangFormatter.Execute(cmd)) {
-        qDebug() << "clangFormatter process executed successfully (style: " + style + ")";
+        qDebug() << "clangFormatter process executed successfully (style: "
+                    + style + ")";
     } else {
-        qDebug() << "clangFormatter process execution failed (style: " + style + ")";
+        qDebug() << "clangFormatter process execution failed (style: "
+                    + style + ")";
     }
 
     if (formattedSrcPreviewer) {
