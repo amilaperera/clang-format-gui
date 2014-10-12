@@ -12,11 +12,11 @@ ClangFormatCommand::ClangFormatCommand(QObject *parent) :
     command += clangFormatCmd;
 }
 
-ClangFormatCommand::ClangFormatCommand(const QString &f, QObject *parent) :
+ClangFormatCommand::ClangFormatCommand(const QString &in, QObject *parent) :
     QObject(parent)
 {
     command += clangFormatCmd;
-    inputFile = f;
+    inputFile = in;
 }
 
 void ClangFormatCommand::SetInputFile(const QString &in)
@@ -38,8 +38,8 @@ QString ClangFormatCommand::GetClangFormatCommand() const
 {
     command += (" \"" + inputFile + "\"");
 
-    // redirect the output to the output file,
-    // if outputFile member is set to an non-empty file
+    // if outputFile is set to a non-empty file
+    // redirect output to the output file
     if (!outputFile.isEmpty()) {
         command += ("> \"" + outputFile + "\"");
     }

@@ -8,7 +8,7 @@ class ClangFormatCommand : public QObject
     Q_OBJECT
 public:
     explicit ClangFormatCommand(QObject *parent = 0);
-    explicit ClangFormatCommand(const QString &f, QObject *parent = 0);
+    explicit ClangFormatCommand(const QString &in, QObject *parent = 0);
     void SetInputFile(const QString &in);
     void SetOutputFile(const QString &out);
     void SetStyle(const QString &style);

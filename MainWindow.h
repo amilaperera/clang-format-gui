@@ -48,8 +48,11 @@ private:
 private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
+    void changeToOriginalSrcTab();
+    void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
     void setStyleOptions(bool enableStatus);
+    void changeStyle(const QString &style);
 };
 
 #endif // MAINWINDOW_H

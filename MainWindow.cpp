@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultFileOpenDir = QDir::homePath();
 
     // set focus to original source preview tab
-    ui->srcPreviewTabWidget->setCurrentIndex(0);
+    changeToOriginalSrcTab();
 
     connect(this, SIGNAL(originalSrcLoaded()), this, SLOT(on_originalSrcLoaded()));
 
@@ -65,6 +65,16 @@ void MainWindow::setInitialSplitSizes()
     QList<int> splitter_sizes;
     splitter_sizes << 300 << 300;
     ui->splitter->setSizes(splitter_sizes);
+}
+
+void MainWindow::changeToOriginalSrcTab()
+{
+    ui->srcPreviewTabWidget->setCurrentWidget(ui->originalSrcTab);
+}
+
+void MainWindow::changeToFormattedSrcTab()
+{
+    ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
 }
 
 void MainWindow::initializeFormatOptionsWidget()
@@ -107,6 +117,28 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
     }
 }
 
+void MainWindow::changeStyle(const QString &style)
+{
+    ClangFormatCommand cmd;
+    cmd.SetInputFile(originalSrcPreviewer->GetFileName());
+    cmd.SetStyle(style);
+
+    ClangFormatter clangFormatter;
+    if (clangFormatter.Execute(cmd)) {
+        qDebug() << "clangFormatter process executed successfully";
+    } else {
+        qDebug() << "clangFormatter process execution failed";
+    }
+
+    if (formattedSrcPreviewer) {
+        delete formattedSrcPreviewer;
+    }
+
+    formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
+                                                 clangFormatter.GetOutput());
+    formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+}
+
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 {
     // if the user clicks on formatted src preview tab we disable open button
@@ -125,23 +157,7 @@ void MainWindow::on_originalSrcLoaded()
 void MainWindow::on_llvmStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        ui->srcPreviewTabWidget->setCurrentIndex(1);
-        ClangFormatCommand cmd(originalSrcPreviewer->GetFileName());
-        cmd.SetStyle("llvm");
-
-        ClangFormatter clangFormatter(&cmd);
-        if (clangFormatter.Execute()) {
-            qDebug() << "clangFormatter process executed successfully";
-        } else {
-            qDebug() << "clangFormatter process execution failed";
-        }
-
-        if (formattedSrcPreviewer) {
-            delete formattedSrcPreviewer;
-        }
-
-        formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
-                                                     clangFormatter.GetOutput());
-        formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+        changeToFormattedSrcTab();
+        changeStyle("llvm");
     }
 }
