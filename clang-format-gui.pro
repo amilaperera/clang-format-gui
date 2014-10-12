@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     SrcFilePreviewer.cpp \
     ClangFormatCommand.cpp \
-    ClangFormatter.cpp
+    ClangFormatter.cpp \
+    FormatOptions.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -73,7 +74,8 @@ HEADERS  += \
     MainWindow.h \
     SrcFilePreviewer.h \
     ClangFormatCommand.h \
-    ClangFormatter.h
+    ClangFormatter.h \
+    FormatOptions.h
 
 FORMS    += mainwindow.ui
 
