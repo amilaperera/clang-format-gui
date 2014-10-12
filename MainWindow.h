@@ -33,13 +33,9 @@ private slots:
     void on_originalSrcLoaded();
 
     void on_llvmStyleRButton_toggled(bool checked);
-
     void on_googleStyleRButton_toggled(bool checked);
-
     void on_chromiumStyleRButton_toggled(bool checked);
-
     void on_mozillaStyleRButton_toggled(bool checked);
-
     void on_webkitStyleRButton_toggled(bool checked);
 
 signals:
