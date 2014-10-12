@@ -34,6 +34,14 @@ private slots:
 
     void on_llvmStyleRButton_toggled(bool checked);
 
+    void on_googleStyleRButton_toggled(bool checked);
+
+    void on_chromiumStyleRButton_toggled(bool checked);
+
+    void on_mozillaStyleRButton_toggled(bool checked);
+
+    void on_webkitStyleRButton_toggled(bool checked);
+
 signals:
     void originalSrcLoaded();
 
@@ -53,6 +61,7 @@ private:
     void initializeFormatOptionsWidget();
     void setStyleOptions(bool enableStatus);
     void changeStyle(const QString &style);
+    void changeStyleOnRButtonToggle(const QString &style);
 };
 
 #endif // MAINWINDOW_H

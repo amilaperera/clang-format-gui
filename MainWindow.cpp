@@ -125,9 +125,9 @@ void MainWindow::changeStyle(const QString &style)
 
     ClangFormatter clangFormatter;
     if (clangFormatter.Execute(cmd)) {
-        qDebug() << "clangFormatter process executed successfully";
+        qDebug() << "clangFormatter process executed successfully (style: " + style + ")";
     } else {
-        qDebug() << "clangFormatter process execution failed";
+        qDebug() << "clangFormatter process execution failed (style: " + style + ")";
     }
 
     if (formattedSrcPreviewer) {
@@ -137,6 +137,12 @@ void MainWindow::changeStyle(const QString &style)
     formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
                                                  clangFormatter.GetOutput());
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+}
+
+void MainWindow::changeStyleOnRButtonToggle(const QString &style)
+{
+    changeToFormattedSrcTab();
+    changeStyle(style);
 }
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
@@ -157,7 +163,36 @@ void MainWindow::on_originalSrcLoaded()
 void MainWindow::on_llvmStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeToFormattedSrcTab();
-        changeStyle("llvm");
+        changeStyleOnRButtonToggle("LLVM");
     }
+}
+
+void MainWindow::on_googleStyleRButton_toggled(bool checked)
+{
+    if (checked) {
+        changeStyleOnRButtonToggle("Google");
+    }
+}
+
+void MainWindow::on_chromiumStyleRButton_toggled(bool checked)
+{
+    if (checked) {
+        changeStyleOnRButtonToggle("Chromium");
+    }
+}
+
+void MainWindow::on_mozillaStyleRButton_toggled(bool checked)
+{
+    if (checked) {
+        changeStyleOnRButtonToggle("Mozilla");
+    }
+
+}
+
+void MainWindow::on_webkitStyleRButton_toggled(bool checked)
+{
+    if (checked) {
+        changeStyleOnRButtonToggle("Webkit");
+    }
+
 }
