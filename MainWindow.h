@@ -57,6 +57,7 @@ private:
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
     void setStyleOptions(bool enableStatus);
+    void setTabOptions(bool enableStatus);
     void updateFormattedSrc();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
 };

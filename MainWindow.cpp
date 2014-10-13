@@ -85,8 +85,11 @@ void MainWindow::initializeFormatOptionsWidget()
     // set 1 st item in the list widget selected at startup
     ui->formatOptionsListWidget->item(0)->setSelected(true);
 
-    // we disable style options settings at startup
+    // disable style options settings at startup
     setStyleOptions(false);
+
+    // disable tabs options settings at startup
+    setTabOptions(false);
 }
 
 void MainWindow::setStyleOptions(bool enableStatus)
@@ -96,6 +99,14 @@ void MainWindow::setStyleOptions(bool enableStatus)
     ui->chromiumStyleRButton->setEnabled(enableStatus);
     ui->mozillaStyleRButton->setEnabled(enableStatus);
     ui->webkitStyleRButton->setEnabled(enableStatus);
+}
+
+void MainWindow::setTabOptions(bool enableStatus)
+{
+    ui->useTabsLbl->setEnabled(enableStatus);
+    ui->useTabsComboBox->setEnabled(enableStatus);
+    ui->tabWidthLbl->setEnabled(enableStatus);
+    ui->tabWidthSpinBox->setEnabled(enableStatus);
 }
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()
@@ -175,6 +186,7 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 void MainWindow::on_originalSrcLoaded()
 {
     setStyleOptions(true);
+    setTabOptions(true);
 }
 
 void MainWindow::on_llvmStyleRButton_toggled(bool checked)
