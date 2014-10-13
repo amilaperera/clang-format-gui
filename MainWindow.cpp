@@ -157,7 +157,6 @@ void MainWindow::updateFormattedSrc()
                                                  clangFormatter.GetOutput());
 
     changeToFormattedSrcTab();
-    qDebug() << clangFormatter.GetOutput();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 }
 
@@ -222,4 +221,17 @@ void MainWindow::on_webkitStyleRButton_toggled(bool checked)
     if (checked) {
         changeStyleOnRButtonToggle(FormatOptions::Webkit);
     }
+}
+
+void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
+{
+    if (arg1 == "Never") {
+        formatOptions->SetUseTab(FormatOptions::Never);
+    } else if (arg1 == "For indentation") {
+        formatOptions->SetUseTab(FormatOptions::ForIndentation);
+    } else if (arg1 == "Always") {
+        formatOptions->SetUseTab(FormatOptions::Always);
+    }
+
+    updateFormattedSrc();
 }

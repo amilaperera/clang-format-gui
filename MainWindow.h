@@ -38,6 +38,8 @@ private slots:
     void on_mozillaStyleRButton_toggled(bool checked);
     void on_webkitStyleRButton_toggled(bool checked);
 
+    void on_useTabsComboBox_currentIndexChanged(const QString &arg1);
+
 signals:
     void originalSrcLoaded();
 

@@ -10,6 +10,7 @@ void FormatOptions::Reset()
 {
     inputFile = "";
     style = LLVM;
+    useTab = Never;
 }
 
 void FormatOptions::SetInputFile(const QString &in)
@@ -20,6 +21,11 @@ void FormatOptions::SetInputFile(const QString &in)
 void FormatOptions::SetStyle(Style s)
 {
     style = s;
+}
+
+void FormatOptions::SetUseTab(FormatOptions::UseTab ut)
+{
+    useTab = ut;
 }
 
 QString FormatOptions::GetClangFormatCommandStr() const
@@ -66,6 +72,7 @@ void FormatOptions::constructClangFormatCommandStr(QString &cmd) const
     cmd += " -style=\"{"; // starting configuration options
 
     setStyleInCommandStr(cmd);
+    setUseTabInCommandStr(cmd);
 
     cmd += "}\""; // ending configuration options
 }
@@ -95,5 +102,27 @@ void FormatOptions::setStyleInCommandStr(QString &cmd) const
     }
 
     cmd += (styleStr + "\"");
+    addFormatOptionsSeparator(cmd);
+}
+
+void FormatOptions::setUseTabInCommandStr(QString &cmd) const
+{
+    QString useTabStr = "UseTab: ";
+
+    switch(useTab) {
+    case Never:
+        useTabStr += "Never";
+        break;
+    case ForIndentation:
+        useTabStr += "ForIndentation";
+        break;
+    case Always:
+        useTabStr += "Always";
+        break;
+    default:
+        useTabStr += Never;
+    }
+
+    cmd += useTabStr;
     addFormatOptionsSeparator(cmd);
 }
