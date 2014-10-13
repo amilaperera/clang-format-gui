@@ -54,15 +54,25 @@ QString FormatOptions::getClangFormatCommandExe() const
     return clangFormatExe;
 }
 
+void FormatOptions::addFormatOptionsSeparator(QString &cmd) const
+{
+    cmd += ", ";
+}
+
 void FormatOptions::constructClangFormatCommandStr(QString &cmd) const
 {
     cmd += getClangFormatCommandExe();
+
+    cmd += " -style=\"{"; // starting configuration options
+
     setStyleInCommandStr(cmd);
+
+    cmd += "}\""; // ending configuration options
 }
 
 void FormatOptions::setStyleInCommandStr(QString &cmd) const
 {
-    QString styleStr = " -style=";
+    QString styleStr = "BasedOnStyle: \"";
 
     switch(style) {
     case LLVM:
@@ -78,11 +88,12 @@ void FormatOptions::setStyleInCommandStr(QString &cmd) const
         styleStr += "Mozilla";
         break;
     case Webkit:
-        styleStr += "Webkit";
+        styleStr += "WebKit";
         break;
     default:
         styleStr += "LLVM";
     }
 
-    cmd += styleStr;
+    cmd += (styleStr + "\"");
+    addFormatOptionsSeparator(cmd);
 }

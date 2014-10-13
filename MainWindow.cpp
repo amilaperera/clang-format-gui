@@ -146,6 +146,7 @@ void MainWindow::updateFormattedSrc()
                                                  clangFormatter.GetOutput());
 
     changeToFormattedSrcTab();
+    qDebug() << clangFormatter.GetOutput();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 }
 

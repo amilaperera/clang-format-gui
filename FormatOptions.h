@@ -32,6 +32,7 @@ private:
 
 private:
     QString getClangFormatCommandExe() const;
+    void addFormatOptionsSeparator(QString &cmd) const;
     void constructClangFormatCommandStr(QString &cmd) const;
     void setStyleInCommandStr(QString &cmd) const;
 };
