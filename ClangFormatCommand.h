@@ -1,6 +1,7 @@
 #ifndef CLANGFORMATCOMMANDBUILDER_H
 #define CLANGFORMATCOMMANDBUILDER_H
 
+#include <QDebug>
 #include <QObject>
 
 class ClangFormatCommand : public QObject

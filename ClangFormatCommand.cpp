@@ -1,6 +1,6 @@
 #include "ClangFormatCommand.h"
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 const QString ClangFormatCommand::clangFormatCmd = "clang-format.exe";
 #else
 const QString ClangFormatCommand::clangFormatCmd = "clang-format";
@@ -43,6 +43,8 @@ QString ClangFormatCommand::GetClangFormatCommand() const
     if (!outputFile.isEmpty()) {
         command += ("> \"" + outputFile + "\"");
     }
+
+    qDebug() << "clang-format command : " << command;
 
     return command;
 }
