@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>757</width>
-    <height>375</height>
+    <width>861</width>
+    <height>426</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,10 +40,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Comments</string>
-           </property>
-           <property name="toolTip">
-            <string>Set Comment options</string>
+            <string>Tabs</string>
            </property>
           </item>
          </widget>
@@ -61,19 +58,19 @@
         <property name="alignment">
          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
           <widget class="QStackedWidget" name="detailsStackWidget">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="styleOptionsPage">
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="">
              <property name="geometry">
               <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>212</width>
+               <x>11</x>
+               <y>11</y>
+               <width>185</width>
                <height>126</height>
               </rect>
              </property>
@@ -116,7 +113,7 @@
              </layout>
             </widget>
            </widget>
-           <widget class="QWidget" name="commentsOptionsPage"/>
+           <widget class="QWidget" name="TabsOptionsPage"/>
           </widget>
          </item>
         </layout>
@@ -193,14 +190,16 @@
      </widget>
     </item>
    </layout>
+   <zorder>splitter_2</zorder>
+   <zorder>srcPreviewTabWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>757</width>
-     <height>21</height>
+     <width>861</width>
+     <height>19</height>
     </rect>
    </property>
   </widget>
