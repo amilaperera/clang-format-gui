@@ -16,7 +16,6 @@ CONFIG += c++11
 SOURCES += main.cpp\
     MainWindow.cpp \
     SrcFilePreviewer.cpp \
-    ClangFormatCommand.cpp \
     ClangFormatter.cpp \
     FormatOptions.cpp
 
@@ -73,7 +72,6 @@ HEADERS  += \
     Qsci/qscistyledtext.h \
     MainWindow.h \
     SrcFilePreviewer.h \
-    ClangFormatCommand.h \
     ClangFormatter.h \
     FormatOptions.h
 

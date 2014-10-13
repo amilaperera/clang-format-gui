@@ -120,34 +120,45 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
     }
 }
 
-void MainWindow::updateFormattedSrc(const QString &style)
+/**
+ * @brief MainWindow::updateFormattedSrc
+ * Update the formatted source according to the current formatting options.
+ */
+void MainWindow::updateFormattedSrc()
 {
-    ClangFormatCommand cmd;
-    cmd.SetInputFile(originalSrcPreviewer->GetFileName());
-    cmd.SetStyle(style);
+    formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
 
     ClangFormatter clangFormatter;
-    if (clangFormatter.Execute(cmd)) {
-        qDebug() << "clangFormatter process executed successfully (style: "
-                    + style + ")";
+    if (clangFormatter.Execute(formatOptions)) {
+        qDebug() << "clangFormatter process executed successfully";
     } else {
-        qDebug() << "clangFormatter process execution failed (style: "
-                    + style + ")";
+        qDebug() << "clangFormatter process execution failed";
     }
 
+    /*
+     * formattedSrcPreviewer is created each time, the formatted source
+     * is updated.
+     */
     if (formattedSrcPreviewer) {
         delete formattedSrcPreviewer;
     }
-
     formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
                                                  clangFormatter.GetOutput());
+
+    changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 }
 
-void MainWindow::changeStyleOnRButtonToggle(const QString &style)
+/**
+ * @brief MainWindow::changeStyleOnRButtonToggle
+ * Set the new style in the formatOptions object.
+ *
+ * @param style format style(LLVM, Google, Chromium, Mozilla, Webkit)
+ */
+void MainWindow::changeStyleOnRButtonToggle(FormatOptions::Style style)
 {
-    changeToFormattedSrcTab();
-    updateFormattedSrc(style);
+    formatOptions->SetStyle(style);
+    updateFormattedSrc();
 }
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
@@ -168,34 +179,34 @@ void MainWindow::on_originalSrcLoaded()
 void MainWindow::on_llvmStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeStyleOnRButtonToggle("LLVM");
+        changeStyleOnRButtonToggle(FormatOptions::LLVM);
     }
 }
 
 void MainWindow::on_googleStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeStyleOnRButtonToggle("Google");
+        changeStyleOnRButtonToggle(FormatOptions::Google);
     }
 }
 
 void MainWindow::on_chromiumStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeStyleOnRButtonToggle("Chromium");
+        changeStyleOnRButtonToggle(FormatOptions::Chromium);
     }
 }
 
 void MainWindow::on_mozillaStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeStyleOnRButtonToggle("Mozilla");
+        changeStyleOnRButtonToggle(FormatOptions::Mozilla);
     }
 }
 
 void MainWindow::on_webkitStyleRButton_toggled(bool checked)
 {
     if (checked) {
-        changeStyleOnRButtonToggle("Webkit");
+        changeStyleOnRButtonToggle(FormatOptions::Webkit);
     }
 }

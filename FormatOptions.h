@@ -1,8 +1,8 @@
 #ifndef FORMATOPTIONS_H
 #define FORMATOPTIONS_H
 
+#include <QDebug>
 #include <QObject>
-#include "ClangFormatCommand.h"
 
 class FormatOptions : public QObject
 {
@@ -17,10 +17,9 @@ public:
     };
 
     explicit FormatOptions(QObject *parent = 0);
-    void Clear();
+    void Reset();
+    void SetInputFile(const QString &in);
     void SetStyle(Style s);
-
-    ClangFormatCommand *GetClangFormatCommand() const;
     QString GetClangFormatCommandStr() const;
 
 signals:
@@ -28,8 +27,13 @@ signals:
 public slots:
 
 private:
-    ClangFormatCommand *clangFormatCommand;
+    QString inputFile;
     Style style;
+
+private:
+    QString getClangFormatCommandExe() const;
+    void constructClangFormatCommandStr(QString &cmd) const;
+    void setStyleInCommandStr(QString &cmd) const;
 };
 
 #endif // FORMATOPTIONS_H

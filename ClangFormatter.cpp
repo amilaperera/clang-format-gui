@@ -4,13 +4,13 @@ ClangFormatter::ClangFormatter(QObject *parent) : QObject(parent)
 {
 }
 
-bool ClangFormatter::Execute(const ClangFormatCommand &clangFormatCommand)
+bool ClangFormatter::Execute(const FormatOptions *formatOptions)
 {
     output.clear();
 
     QProcess clangFormatProc;
 
-    clangFormatProc.start(clangFormatCommand.GetClangFormatCommand());
+    clangFormatProc.start(formatOptions->GetClangFormatCommandStr());
 
     if (!clangFormatProc.waitForStarted()) {
         return false;

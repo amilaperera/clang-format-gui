@@ -11,7 +11,6 @@
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
-#include "ClangFormatCommand.h"
 #include "ClangFormatter.h"
 #include "FormatOptions.h"
 
@@ -58,8 +57,8 @@ private:
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
     void setStyleOptions(bool enableStatus);
-    void updateFormattedSrc(const QString &style);
-    void changeStyleOnRButtonToggle(const QString &style);
+    void updateFormattedSrc();
+    void changeStyleOnRButtonToggle(FormatOptions::Style style);
 };
 
 #endif // MAINWINDOW_H
