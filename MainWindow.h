@@ -58,7 +58,7 @@ private:
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
     void setStyleOptions(bool enableStatus);
-    void changeStyle(const QString &style);
+    void updateFormattedSrc(const QString &style);
     void changeStyleOnRButtonToggle(const QString &style);
 };
 

@@ -3,6 +3,7 @@
 FormatOptions::FormatOptions(QObject *parent) :
     QObject(parent)
 {
+    clangFormatCommand = new ClangFormatCommand(this);
     Clear();
 }
 
@@ -14,9 +15,34 @@ void FormatOptions::Clear()
 void FormatOptions::SetStyle(Style s)
 {
     style = s;
+
+    switch (s) {
+    case LLVM:
+        clangFormatCommand->SetStyle("LLVM");
+        break;
+    case Google:
+        clangFormatCommand->SetStyle("Google");
+        break;
+    case Chromium:
+        clangFormatCommand->SetStyle("Chromium");
+        break;
+    case Mozilla:
+        clangFormatCommand->SetStyle("Mozilla");
+        break;
+    case Webkit:
+        clangFormatCommand->SetStyle("Webkit");
+        break;
+    default:
+        clangFormatCommand->SetStyle("LLVM");
+    }
 }
 
-FormatOptions::Style FormatOptions::GetStyle() const
+ClangFormatCommand *FormatOptions::GetClangFormatCommand() const
 {
-    return style;
+    return clangFormatCommand;
+}
+
+QString FormatOptions::GetClangFormatCommandStr() const
+{
+    return clangFormatCommand->GetClangFormatCommand();
 }

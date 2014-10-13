@@ -120,7 +120,7 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
     }
 }
 
-void MainWindow::changeStyle(const QString &style)
+void MainWindow::updateFormattedSrc(const QString &style)
 {
     ClangFormatCommand cmd;
     cmd.SetInputFile(originalSrcPreviewer->GetFileName());
@@ -147,7 +147,7 @@ void MainWindow::changeStyle(const QString &style)
 void MainWindow::changeStyleOnRButtonToggle(const QString &style)
 {
     changeToFormattedSrcTab();
-    changeStyle(style);
+    updateFormattedSrc(style);
 }
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
@@ -191,7 +191,6 @@ void MainWindow::on_mozillaStyleRButton_toggled(bool checked)
     if (checked) {
         changeStyleOnRButtonToggle("Mozilla");
     }
-
 }
 
 void MainWindow::on_webkitStyleRButton_toggled(bool checked)
@@ -199,5 +198,4 @@ void MainWindow::on_webkitStyleRButton_toggled(bool checked)
     if (checked) {
         changeStyleOnRButtonToggle("Webkit");
     }
-
 }
