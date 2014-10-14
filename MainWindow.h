@@ -8,11 +8,14 @@
 #include <QDebug>
 #include <QFont>
 #include <QTreeWidget>
+#include <QSettings>
+#include <QFileInfoList>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
 #include "ClangFormatter.h"
 #include "FormatOptions.h"
+#include "Utility.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +47,8 @@ signals:
     void originalSrcLoaded();
 
 private:
+    const QString organization = "Amila Perera";
+    const QString application = "clang-format-GUI";
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
     SrcFilePreviewer *originalSrcPreviewer;
@@ -54,6 +59,8 @@ private:
 
 private:
     bool preCheck();
+    void writeSettings();
+    void readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void changeToOriginalSrcTab();

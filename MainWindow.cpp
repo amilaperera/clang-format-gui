@@ -246,5 +246,25 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
  */
 bool MainWindow::preCheck()
 {
+    readSettings();
     return true;
+}
+
+void MainWindow::readSettings()
+{
+    qDebug() << "Reading settings";
+
+    QSettings settings(organization, application);
+
+    QString clangFormatExe = settings.value("clangFormatExe").toString();
+    if (clangFormatExe.isEmpty()) {
+        qDebug() << "clangFormatExe is empty";
+
+        // Probably, this is the first time the application is started.
+        // We search the clang-format tool in standard locations
+        QFileInfoList clangFormatCmdList;
+        Utility::FindClangFormatCommand(clangFormatCmdList);
+    } else {
+        ClangFormatter::SetClangFormatCommand(clangFormatExe);
+    }
 }

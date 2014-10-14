@@ -4,11 +4,12 @@
 #include <QCoreApplication>
 #include <QObject>
 #include <QFile>
+#include <QDir>
 #include "ClangFormatter.h"
 
 namespace Utility
 {
-    bool FindClangFormatCommand();
+    bool FindClangFormatCommand(QFileInfoList &clangFormatCmdList);
 }
 
 #endif // UTILITY_H
