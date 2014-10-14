@@ -45,29 +45,9 @@ QString FormatOptions::GetClangFormatCommandStr() const
     return clangFormatCommandStr;
 }
 
-QString FormatOptions::getClangFormatCommandExe() const
-{
-    QString clangFormatExe = "";
-
-#if defined(Q_OS_WIN)
-    clangFormatExe += "clang-format.exe";
-#elif defined(Q_OS_LINUX)
-    clangFormatExe += "clang-format";
-#else
-    clangFormatExe += "clang-format";
-#endif
-
-    return clangFormatExe;
-}
-
-void FormatOptions::addFormatOptionsSeparator(QString &cmd) const
-{
-    cmd += ", ";
-}
-
 void FormatOptions::constructClangFormatCommandStr(QString &cmd) const
 {
-    cmd += getClangFormatCommandExe();
+    cmd += ClangFormatter::GetClangFormatCommand();
 
     cmd += " -style=\"{"; // starting configuration options
 
@@ -75,6 +55,11 @@ void FormatOptions::constructClangFormatCommandStr(QString &cmd) const
     setUseTabInCommandStr(cmd);
 
     cmd += "}\""; // ending configuration options
+}
+
+void FormatOptions::addFormatOptionsSeparator(QString &cmd) const
+{
+    cmd += ", ";
 }
 
 void FormatOptions::setStyleInCommandStr(QString &cmd) const

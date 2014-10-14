@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QObject>
+#include "ClangFormatter.h"
 
 class FormatOptions : public QObject
 {
@@ -39,7 +40,6 @@ private:
     UseTab useTab;
 
 private:
-    QString getClangFormatCommandExe() const;
     void addFormatOptionsSeparator(QString &cmd) const;
     void constructClangFormatCommandStr(QString &cmd) const;
     void setStyleInCommandStr(QString &cmd) const;

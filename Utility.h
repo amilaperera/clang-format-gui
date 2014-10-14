@@ -1,19 +1,14 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include <QCoreApplication>
 #include <QObject>
+#include <QFile>
+#include "ClangFormatter.h"
 
-class Utility : public QObject
+namespace Utility
 {
-    Q_OBJECT
-public:
-    explicit Utility(QObject *parent = 0);
-    static bool doesClangFormatExist();
-
-signals:
-
-public slots:
-
-};
+    bool FindClangFormatCommand();
+}
 
 #endif // UTILITY_H

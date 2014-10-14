@@ -75,7 +75,6 @@ HEADERS  += \
     SrcFilePreviewer.h \
     ClangFormatter.h \
     FormatOptions.h \
-    Utility.h
 
 FORMS    += mainwindow.ui
 

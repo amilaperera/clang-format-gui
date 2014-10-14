@@ -1,12 +1,11 @@
 #include "Utility.h"
 
-Utility::Utility(QObject *parent) :
-    QObject(parent)
+namespace Utility
 {
+
+bool FindClangFormatCommand()
+{
+    return true;
 }
 
-bool Utility::doesClangFormatExist()
-{
-
-    return true;
 }
