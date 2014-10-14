@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    if (!preCheck()) {
+        // If precheck fails exit the application with an error
+    }
 
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
@@ -234,4 +237,14 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
     }
 
     updateFormattedSrc();
+}
+
+/**
+ * @brief MainWindow::preCheck
+ * Checks for several pre-requisites needed for the application to run
+ * @return true on success, flase on error
+ */
+bool MainWindow::preCheck()
+{
+    return true;
 }

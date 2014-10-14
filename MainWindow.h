@@ -53,6 +53,7 @@ private:
     FormatOptions *formatOptions;
 
 private:
+    bool preCheck();
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void changeToOriginalSrcTab();
