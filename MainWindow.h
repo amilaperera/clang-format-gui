@@ -10,6 +10,7 @@
 #include <QTreeWidget>
 #include <QSettings>
 #include <QFileInfoList>
+#include <QMessageBox>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -59,6 +60,7 @@ private:
 
 private:
     bool preCheck();
+    void destroyApp();
     void writeSettings();
     void readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);

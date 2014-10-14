@@ -250,6 +250,11 @@ bool MainWindow::preCheck()
     return true;
 }
 
+void MainWindow::destroyApp()
+{
+    close();
+}
+
 void MainWindow::readSettings()
 {
     qDebug() << "Reading settings";
@@ -263,7 +268,16 @@ void MainWindow::readSettings()
         // Probably, this is the first time the application is started.
         // We search the clang-format tool in standard locations
         QFileInfoList clangFormatCmdList;
-        Utility::FindClangFormatCommand(clangFormatCmdList);
+        if (!Utility::FindClangFormatCommand(clangFormatCmdList)) {
+            // if no clang-format executable is found, terminate the application
+            QMessageBox::critical(this,
+                                    tr("Fatal Error"),
+                                    tr("Could not find clang-format command line tool in PATH.\n"
+                                    "Install clang-format first and restart this application.\n"));
+            destroyApp();
+        } else {
+            // set the clang-format executable
+        }
     } else {
         ClangFormatter::SetClangFormatCommand(clangFormatExe);
     }
