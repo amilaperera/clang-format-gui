@@ -17,6 +17,8 @@
 #include "ClangFormatter.h"
 #include "FormatOptions.h"
 #include "Utility.h"
+#include "ClangFormatCmdSet.h"
+#include "Settings.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,7 +29,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    enum ExitCodes {
+        SUCCESS = 0,
+
+        NO_CLANG_FORMAT_EXE,
+        NO_CLANG_FORMAT_EXE_SELECTED,
+    };
+
     explicit MainWindow(QWidget *parent = 0);
+    bool PreCheck();
     ~MainWindow();
 
 private slots:
@@ -48,7 +58,7 @@ signals:
     void originalSrcLoaded();
 
 private:
-    const QString organization = "Amila Perera";
+    const QString organization = "clang-format-GUI";
     const QString application = "clang-format-GUI";
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
@@ -59,8 +69,7 @@ private:
     FormatOptions *formatOptions;
 
 private:
-    bool preCheck();
-    void destroyApp();
+    void exitApplication(ExitCodes status);
     void writeSettings();
     void readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);

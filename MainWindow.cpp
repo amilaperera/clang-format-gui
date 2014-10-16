@@ -6,9 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    if (!preCheck()) {
-        // If precheck fails exit the application with an error
-    }
 
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
@@ -52,6 +49,17 @@ MainWindow::~MainWindow()
     // NOTE: QSciScintilla objects will be deleted by ownership concept
     delete originalSrcPreviewer;
     delete ui;
+}
+
+/**
+ * @brief MainWindow::preCheck
+ * Checks for several pre-requisites needed for the application to run
+ * @return true on success, flase on error
+ */
+bool MainWindow::PreCheck()
+{
+    readSettings();
+    return true;
 }
 
 void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
@@ -239,29 +247,19 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
     updateFormattedSrc();
 }
 
-/**
- * @brief MainWindow::preCheck
- * Checks for several pre-requisites needed for the application to run
- * @return true on success, flase on error
- */
-bool MainWindow::preCheck()
-{
-    readSettings();
-    return true;
-}
-
-void MainWindow::destroyApp()
+void MainWindow::exitApplication(ExitCodes status)
 {
     close();
+    exit(status);
 }
 
 void MainWindow::readSettings()
 {
-    qDebug() << "Reading settings";
 
     QSettings settings(organization, application);
+    qDebug() << "Reading settings from " << settings.fileName();
 
-    QString clangFormatExe = settings.value("clangFormatExe").toString();
+    QString clangFormatExe = settings.value(Settings::ClangFormatExe).toString();
     if (clangFormatExe.isEmpty()) {
         qDebug() << "clangFormatExe is empty";
 
@@ -274,9 +272,28 @@ void MainWindow::readSettings()
                                     tr("Fatal Error"),
                                     tr("Could not find clang-format command line tool in PATH.\n"
                                     "Install clang-format first and restart this application.\n"));
-            destroyApp();
+            exitApplication(NO_CLANG_FORMAT_EXE);
         } else {
             // set the clang-format executable
+            ClangFormatCmdSet clangFormatCmdSetDialog(clangFormatCmdList);
+
+            // set as a modal dialog
+            if (clangFormatCmdSetDialog.exec()) {
+                // accepted
+                QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
+
+                ClangFormatter::SetClangFormatCommand(cmd);
+                if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
+                    settings.setValue(Settings::ClangFormatExe, cmd);
+                }
+            } else {
+                // rejected
+                QMessageBox::critical(this,
+                                        tr("Fatal Error"),
+                                        tr("Application can not continue without"
+                                           " a proper clang-format binary selected.\n"));
+                exitApplication(NO_CLANG_FORMAT_EXE_SELECTED);
+            }
         }
     } else {
         ClangFormatter::SetClangFormatCommand(clangFormatExe);

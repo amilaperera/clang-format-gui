@@ -1,13 +1,7 @@
 #include "ClangFormatter.h"
 #include "FormatOptions.h"
 
-#if defined(Q_OS_WIN)
-    QString ClangFormatter::clangFormatCommand = "clang-format.exe";
-#elif defined(Q_OS_LINUX)
-    QString ClangFormatter::clangFormatCommand = "clang-format";
-#else
-    QString ClangFormatter::clangFormatCommand = "clang-format";
-#endif
+QString ClangFormatter::clangFormatCommand = "";
 
 ClangFormatter::ClangFormatter(QObject *parent) : QObject(parent)
 {

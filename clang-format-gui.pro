@@ -18,7 +18,9 @@ SOURCES += main.cpp\
     SrcFilePreviewer.cpp \
     ClangFormatter.cpp \
     FormatOptions.cpp \
-    Utility.cpp
+    Utility.cpp \
+    ClangFormatCmdSet.cpp \
+    Settings.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -75,8 +77,11 @@ HEADERS  += \
     SrcFilePreviewer.h \
     ClangFormatter.h \
     FormatOptions.h \
+    ClangFormatCmdSet.h \
+    Settings.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    ClangFormatCmdSet.ui
 
 # add qscintilla library for windows
 # remember to copy the debug dll of qscintilla to the library path
