@@ -14,12 +14,12 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-    MainWindow.cpp \
+    Ui/MainWindow.cpp \
+    Ui/ClangFormatCmdSet.cpp \
     SrcFilePreviewer.cpp \
     ClangFormatter.cpp \
     FormatOptions.cpp \
     Utility.cpp \
-    ClangFormatCmdSet.cpp \
     Settings.cpp
 
 HEADERS  += \
@@ -73,15 +73,15 @@ HEADERS  += \
     Qsci/qsciscintillabase.h \
     Qsci/qscistyle.h \
     Qsci/qscistyledtext.h \
-    MainWindow.h \
+    Ui/MainWindow.h \
+    Ui/ClangFormatCmdSet.h \
     SrcFilePreviewer.h \
     ClangFormatter.h \
     FormatOptions.h \
-    ClangFormatCmdSet.h \
     Settings.h
 
-FORMS    += mainwindow.ui \
-    ClangFormatCmdSet.ui
+FORMS    += Ui/mainwindow.ui \
+    Ui/ClangFormatCmdSet.ui
 
 # add qscintilla library for windows
 # remember to copy the debug dll of qscintilla to the library path
