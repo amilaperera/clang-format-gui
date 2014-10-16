@@ -80,8 +80,9 @@ HEADERS  += \
     FormatOptions.h \
     Settings.h
 
-FORMS    += Ui/mainwindow.ui \
-    Ui/ClangFormatCmdSet.ui
+FORMS    += \
+    Ui/ClangFormatCmdSet.ui \
+    Ui/Mainwindow.ui
 
 # add qscintilla library for windows
 # remember to copy the debug dll of qscintilla to the library path
