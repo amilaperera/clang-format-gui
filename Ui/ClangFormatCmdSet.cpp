@@ -9,7 +9,7 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
     ui->okPushButton->setDefault(true);
 
     ui->gridLayout->addWidget(new QLabel(tr("The following clang-format binary "
-                                            "file(s) are found in the sytem"), this),
+                                            "file(s) are found in the system"), this),
                               0, 0);
     int i = 0;
     for (auto &cmd : cmdList) {

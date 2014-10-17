@@ -93,7 +93,9 @@ void MainWindow::changeToFormattedSrcTab()
 
 void MainWindow::initializeFormatOptionsWidget()
 {
-    // set 1 st item in the list widget selected at startup
+    // set 0th item in the list widget selected at startup
+    ui->detailsStackWidget->setCurrentIndex(0);
+
     ui->formatOptionsListWidget->item(0)->setSelected(true);
 
     // disable style options settings at startup

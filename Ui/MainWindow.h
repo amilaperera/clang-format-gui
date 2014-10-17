@@ -60,6 +60,7 @@ signals:
 private:
     const QString organization = "clang-format-GUI";
     const QString application = "clang-format-GUI";
+
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
     SrcFilePreviewer *originalSrcPreviewer;
