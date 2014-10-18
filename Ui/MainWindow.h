@@ -29,13 +29,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    enum ExitCodes {
-        SUCCESS = 0,
-
-        NO_CLANG_FORMAT_EXE,
-        NO_CLANG_FORMAT_EXE_SELECTED,
-    };
-
     explicit MainWindow(QWidget *parent = 0);
     bool PreCheck();
     ~MainWindow();
@@ -70,9 +63,7 @@ private:
     FormatOptions *formatOptions;
 
 private:
-    void exitApplication(ExitCodes status);
-    void writeSettings();
-    void readSettings();
+    bool readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void changeToOriginalSrcTab();

@@ -58,8 +58,9 @@ MainWindow::~MainWindow()
  */
 bool MainWindow::PreCheck()
 {
-    readSettings();
-    return true;
+    bool ret = true;
+    ret = readSettings();
+    return ret;
 }
 
 void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
@@ -249,13 +250,7 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
     updateFormattedSrc();
 }
 
-void MainWindow::exitApplication(ExitCodes status)
-{
-    close();
-    exit(status);
-}
-
-void MainWindow::readSettings()
+bool MainWindow::readSettings()
 {
 
     QSettings settings(organization, application);
@@ -274,7 +269,7 @@ void MainWindow::readSettings()
                                     tr("Fatal Error"),
                                     tr("Could not find clang-format command line tool in PATH.\n"
                                     "Install clang-format first and restart this application.\n"));
-            exitApplication(NO_CLANG_FORMAT_EXE);
+            return false;
         } else {
             // set the clang-format executable
             ClangFormatCmdSet clangFormatCmdSetDialog(clangFormatCmdList);
@@ -294,10 +289,11 @@ void MainWindow::readSettings()
                                         tr("Fatal Error"),
                                         tr("Application can not continue without"
                                            " a proper clang-format binary selected.\n"));
-                exitApplication(NO_CLANG_FORMAT_EXE_SELECTED);
+                return false;
             }
         }
     } else {
         ClangFormatter::SetClangFormatCommand(clangFormatExe);
     }
+    return true;
 }
