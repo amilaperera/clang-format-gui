@@ -108,16 +108,16 @@ void ClangFormatCmdSet::on_cmdPathLineEdit_textChanged(const QString &arg1)
 {
     QFileInfo fileName(arg1);
     if (fileName.exists() && fileName.isFile() && fileName.isExecutable()) {
-        ui->cmdPathLineEdit->setStyleSheet("color: black");
+        // set the widget's font color and tool tip color to normal
+        ui->cmdPathLineEdit->setStyleSheet("QWidget {color: black;} QWidget QTooltip {color: black;}");
         ui->cmdPathLineEdit->setToolTip("");
     } else {
-        ui->cmdPathLineEdit->setStyleSheet("color: red");
-        if (!fileName.exists()) {
-            ui->cmdPathLineEdit->setToolTip(tr("File does not exist"));
-        } else if (fileName.isDir()) {
-            ui->cmdPathLineEdit->setToolTip(tr("Directory names are not allowed"));
-        } else if (!fileName.isExecutable()) {
+        // set the widget's font color and tool tip color to red
+        ui->cmdPathLineEdit->setStyleSheet("QWidget {color: red;} QWidget QToolTip { color:red; }");
+        if (!fileName.isExecutable()) {
             ui->cmdPathLineEdit->setToolTip(tr("File is not executable"));
+        } else {
+            ui->cmdPathLineEdit->setToolTip(tr("File doesn't exist"));
         }
     }
 }
