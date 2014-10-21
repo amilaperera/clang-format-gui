@@ -10,6 +10,8 @@
 #include <QLabel>
 #include <QCheckBox>
 
+#include "Utility.h"
+
 namespace Ui {
 class ClangFormatCmdSet;
 }

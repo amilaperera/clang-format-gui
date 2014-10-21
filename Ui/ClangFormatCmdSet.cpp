@@ -13,7 +13,19 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
                               0, 0);
     int i = 0;
     for (auto &cmd : cmdList) {
-        radioButtonList << new QRadioButton(cmd.absoluteFilePath(), this);
+        QString versionStrForRButton;
+        QString versionStr = Utility::GetClangFormatVersion(cmd);
+        // if we can not retrieve version information,
+        // we don't append them to the radio button command
+        if (!versionStr.isEmpty()) {
+            // add version information for this command
+            versionStrForRButton = " (" + tr("version") + ": " + versionStr + ")";
+        }
+        QRadioButton *rButton = new QRadioButton(cmd.absoluteFilePath() +
+                                                versionStrForRButton,
+                                                this);
+        rButton->setStyleSheet("font: italic");
+        radioButtonList << rButton;
         if (i == 0) {
             // select the first one
             radioButtonList.at(i)->setChecked(true);

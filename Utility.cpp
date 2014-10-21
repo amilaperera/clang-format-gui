@@ -45,4 +45,30 @@ static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList)
     return true;
 }
 
+QString GetClangFormatVersion(const QFileInfo &clangFormatCmd)
+{
+    QProcess cmd;
+    cmd.setProcessChannelMode(QProcess::MergedChannels);
+    cmd.start(clangFormatCmd.absoluteFilePath() + " -version");
+    if (!cmd.waitForStarted()) {
+        return "";
+    }
+
+    if (!cmd.waitForFinished()) {
+        return "";
+    }
+
+    QString output = cmd.readAll();
+    QString version;
+
+    QRegularExpression re("llvm version\\D*(\\d+(\\D\\d+)?)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match = re.match(output);
+    if (match.hasMatch()) {
+        version = match.captured(1);
+    }
+    qDebug() << "version of " << clangFormatCmd.absoluteFilePath() << " is " << version;
+
+    return version;
+}
+
 }
