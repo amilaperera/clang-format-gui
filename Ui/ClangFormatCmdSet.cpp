@@ -34,6 +34,9 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
         ++i;
     }
     shouldSaveSettings = false;
+    setManualCmdSetGroup(false);
+    ui->okPushButton->setFocus();
+    setTabOrderOfDialogBox();
 }
 
 ClangFormatCmdSet::~ClangFormatCmdSet()
@@ -61,4 +64,60 @@ QString ClangFormatCmdSet::GetSelectedFormatCmd()
 void ClangFormatCmdSet::on_checkBox_toggled(bool checked)
 {
     shouldSaveSettings = checked;
+}
+
+void ClangFormatCmdSet::setTabOrderOfDialogBox()
+{
+    for (int i = 0; i < radioButtonList.size(); ++i) {
+        if (i == (radioButtonList.size() - 1)) {
+            // if the current radio button is the last
+            setTabOrder(radioButtonList.at(i), ui->manualSetRButton);
+        } else {
+            setTabOrder(radioButtonList.at(i), radioButtonList.at(i + 1));
+        }
+    }
+}
+
+void ClangFormatCmdSet::setManualCmdSetGroup(bool status)
+{
+    ui->cmdPathLineEdit->setEnabled(status);
+    ui->cmdBrowseToolButton->setEnabled(status);
+}
+
+void ClangFormatCmdSet::on_manualSetRButton_toggled(bool checked)
+{
+    if (checked) {
+        setManualCmdSetGroup(true);
+    } else {
+        setManualCmdSetGroup(false);
+    }
+}
+
+void ClangFormatCmdSet::on_cmdBrowseToolButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Select clang-format command"),
+                                                    QDir::homePath());
+
+    if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
+        ui->cmdPathLineEdit->setText(fileName);
+    }
+}
+
+void ClangFormatCmdSet::on_cmdPathLineEdit_textChanged(const QString &arg1)
+{
+    QFileInfo fileName(arg1);
+    if (fileName.exists() && fileName.isFile() && fileName.isExecutable()) {
+        ui->cmdPathLineEdit->setStyleSheet("color: black");
+        ui->cmdPathLineEdit->setToolTip("");
+    } else {
+        ui->cmdPathLineEdit->setStyleSheet("color: red");
+        if (!fileName.exists()) {
+            ui->cmdPathLineEdit->setToolTip(tr("File does not exist"));
+        } else if (fileName.isDir()) {
+            ui->cmdPathLineEdit->setToolTip(tr("Directory names are not allowed"));
+        } else if (!fileName.isExecutable()) {
+            ui->cmdPathLineEdit->setToolTip(tr("File is not executable"));
+        }
+    }
 }

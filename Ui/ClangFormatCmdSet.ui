@@ -59,7 +59,7 @@
       </spacer>
      </item>
      <item row="1" column="0" colspan="2">
-      <widget class="QLineEdit" name="cmdPath"/>
+      <widget class="QLineEdit" name="cmdPathLineEdit"/>
      </item>
      <item row="1" column="2">
       <widget class="QToolButton" name="cmdBrowseToolButton">
