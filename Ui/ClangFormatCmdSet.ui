@@ -39,7 +39,7 @@
    <item row="2" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="manualSetRButton">
        <property name="text">
         <string>Use clang-format from a different path</string>
        </property>
@@ -59,10 +59,10 @@
       </spacer>
      </item>
      <item row="1" column="0" colspan="2">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="cmdPath"/>
      </item>
      <item row="1" column="2">
-      <widget class="QToolButton" name="toolButton">
+      <widget class="QToolButton" name="cmdBrowseToolButton">
        <property name="text">
         <string/>
        </property>
