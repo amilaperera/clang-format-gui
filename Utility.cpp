@@ -17,7 +17,8 @@ bool FindClangFormatCommand(QFileInfoList &clangFormatCmdList)
 
 static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList)
 {
-    QStringList pathList = QString(qgetenv("PATH")).split(":", QString::SkipEmptyParts);
+    QStringList pathList = QString(qgetenv("PATH")).split(":",
+                                                          QString::SkipEmptyParts);
 
     // this returns the number of removed duplicates and we're not interested
     // in its value
@@ -61,12 +62,19 @@ QString GetClangFormatVersion(const QFileInfo &clangFormatCmd)
     QString output = cmd.readAll();
     QString version;
 
-    QRegularExpression re("llvm version\\D*(\\d+(\\D\\d+)?)", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression re("llvm version\\D*(\\d+(\\D\\d+)?)",
+                          QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match = re.match(output);
     if (match.hasMatch()) {
         version = match.captured(1);
     }
-    qDebug() << "version of " << clangFormatCmd.absoluteFilePath() << " is " << version;
+    if (!version.isEmpty()) {
+        qDebug() << "version of " << clangFormatCmd.absoluteFilePath() <<
+                    " is " << version;
+    } else {
+        qDebug() << "Could not retrieve the clang-format version information";
+    }
+
 
     return version;
 }
