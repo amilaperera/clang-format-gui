@@ -79,6 +79,7 @@ void ClangFormatCmdSet::setTabOrderOfDialogBox()
 
 void ClangFormatCmdSet::setManualCmdSetGroup(bool status)
 {
+    ui->cmdPathLineEdit->clear();
     ui->cmdPathLineEdit->setEnabled(status);
     ui->cmdBrowseToolButton->setEnabled(status);
 }
@@ -116,8 +117,8 @@ void ClangFormatCmdSet::on_cmdPathLineEdit_textChanged(const QString &arg1)
             ui->cmdPathLineEdit->setStyleSheet("QWidget {color: black;} QWidget QTooltip {color: black;}");
             ui->cmdPathLineEdit->setToolTip("");
         } else {
-            // set the widget's font color and tool tip color to red
-            ui->cmdPathLineEdit->setStyleSheet("QWidget {color: red;} QWidget QToolTip { color: red; }");
+            // set the widget's font color to red
+            ui->cmdPathLineEdit->setStyleSheet("QWidget {color: red;} QWidget QTooltip {color: black;}");
             if (!fileName.isExecutable()) {
                 ui->cmdPathLineEdit->setToolTip(tr("File is not executable"));
             } else {
