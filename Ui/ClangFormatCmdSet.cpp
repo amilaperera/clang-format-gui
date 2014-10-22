@@ -11,8 +11,8 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
     ui->gridLayout->addWidget(new QLabel(tr("The following clang-format binary "
                                             "file(s) are found in the system"), this),
                               0, 0);
-    int i = 0;
-    for (auto &cmd : cmdList) {
+    for (int i = 0; i < cmdList.size(); ++i) {
+        QFileInfo cmd = cmdList.at(i);
         QString versionStrForRButton;
         QString versionStr = Utility::GetClangFormatVersion(cmd);
         // if we can not retrieve version information,
@@ -31,7 +31,6 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
             radioButtonList.at(i)->setChecked(true);
         }
         ui->gridLayout->addWidget(radioButtonList.at(i), 3 + i, 0);
-        ++i;
     }
     shouldSaveSettings = false;
     setManualCmdSetGroup(false);
@@ -118,7 +117,7 @@ void ClangFormatCmdSet::on_cmdPathLineEdit_textChanged(const QString &arg1)
             ui->cmdPathLineEdit->setToolTip("");
         } else {
             // set the widget's font color and tool tip color to red
-            ui->cmdPathLineEdit->setStyleSheet("QWidget {color: red;} QWidget QToolTip { color:red; }");
+            ui->cmdPathLineEdit->setStyleSheet("QWidget {color: red;} QWidget QToolTip { color: red; }");
             if (!fileName.isExecutable()) {
                 ui->cmdPathLineEdit->setToolTip(tr("File is not executable"));
             } else {
