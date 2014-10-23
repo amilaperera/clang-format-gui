@@ -30,8 +30,10 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    bool PreCheck();
     ~MainWindow();
+    bool PreCheck();
+    bool ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
+                                     QSettings &settings);
 
 private slots:
     void on_openOriginalSrcToolButton_clicked();

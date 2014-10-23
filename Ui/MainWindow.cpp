@@ -252,7 +252,7 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
 
 bool MainWindow::readSettings()
 {
-
+    bool ret = true;
     QSettings settings(organization, application);
     qDebug() << "Reading settings from " << settings.fileName();
 
@@ -261,39 +261,59 @@ bool MainWindow::readSettings()
         qDebug() << "clangFormatExe is empty";
 
         // Probably, this is the first time the application is started.
-        // We search the clang-format tool in standard locations
+        // We search the clang-format tool in standard locations.
         QFileInfoList clangFormatCmdList;
-        if (!Utility::FindClangFormatCommand(clangFormatCmdList)) {
-            // if no clang-format executable is found, terminate the application
-            QMessageBox::critical(this,
-                                    tr("Fatal Error"),
-                                    tr("Could not find clang-format command line tool in PATH.\n"
-                                    "Install clang-format first and restart this application.\n"));
-            return false;
+
+        // We get the installed clang-format command list in the system path.
+        // Since we let the user to select the clang-format executable manually,
+        // we can safely ignore the return of this function.
+        (void) Utility::FindClangFormatCommand(clangFormatCmdList);
+
+        // Displays the "Set clang-format-executable" dialog box
+        // and have the required file input from the user.
+       ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
+
+    } else {
+        if (!QFileInfo(clangFormatExe).exists()) {
+
+            QFileInfoList clangFormatCmdList;
+            // We get the installed clang-format command list in the system path.
+            // Since we let the user to select the clang-format executable manually,
+            // we can safely ignore the return of this function.
+            (void) Utility::FindClangFormatCommand(clangFormatCmdList);
+
+            // If the path of the clang-format saved in the configuration
+            // is invalid (does not exit) display an error.
+           ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
         } else {
-            // set the clang-format executable
-            ClangFormatCmdSet clangFormatCmdSetDialog(clangFormatCmdList);
+            ClangFormatter::SetClangFormatCommand(clangFormatExe);
+        }
+    }
+    return ret;
+}
 
-            // set as a modal dialog
-            if (clangFormatCmdSetDialog.exec()) {
-                // accepted
-                QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
+bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
+                                             QSettings &settings)
+{
+    bool ret = true;
+    ClangFormatCmdSet clangFormatCmdSetDialog(cmdList);
 
-                ClangFormatter::SetClangFormatCommand(cmd);
-                if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
-                    settings.setValue(Settings::ClangFormatExe, cmd);
-                }
-            } else {
-                // rejected
-                QMessageBox::critical(this,
-                                        tr("Fatal Error"),
-                                        tr("Application can not continue without"
-                                           " a proper clang-format binary selected.\n"));
-                return false;
-            }
+    // set as a modal dialog
+    if (clangFormatCmdSetDialog.exec()) {
+        // accepted
+        QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
+
+        ClangFormatter::SetClangFormatCommand(cmd);
+        if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
+            settings.setValue(Settings::ClangFormatExe, cmd);
         }
     } else {
-        ClangFormatter::SetClangFormatCommand(clangFormatExe);
+        // rejected
+        QMessageBox::critical(this,
+                                tr("Fatal Error"),
+                                tr("Application can not continue without "
+                                   "a proper clang-format executable being selected.\n"));
+        ret = false;
     }
-    return true;
+    return ret;
 }

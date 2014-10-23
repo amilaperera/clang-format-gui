@@ -8,30 +8,45 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
     ui->setupUi(this);
     ui->okPushButton->setDefault(true);
 
-    ui->gridLayout->addWidget(new QLabel(tr("The following clang-format binary "
-                                            "file(s) are found in the system"), this),
-                              0, 0);
-    for (int i = 0; i < cmdList.size(); ++i) {
-        QFileInfo cmd = cmdList.at(i);
-        QString versionStrForRButton;
-        QString versionStr = Utility::GetClangFormatVersion(cmd);
-        // if we can not retrieve version information,
-        // we don't append them to the radio button command
-        if (!versionStr.isEmpty()) {
-            // add version information for this command
-            versionStrForRButton = " (" + tr("version") + ": " + versionStr + ")";
+    if (cmdList.size() > 0) {
+        // if there are clang-format executables install in the system path
+        if (cmdList.size() == 1) {
+            ui->gridLayout->addWidget(new QLabel(tr("The following clang-format executable "
+                                                    "is found in the system path"), this),
+                                      0, 0);
+        } else {
+            ui->gridLayout->addWidget(new QLabel(tr("The following clang-format executables "
+                                                    "are found in the system path"), this),
+                                      0, 0);
         }
-        QRadioButton *rButton = new QRadioButton(cmd.absoluteFilePath() +
-                                                versionStrForRButton,
-                                                this);
-        rButton->setStyleSheet("font: italic");
-        radioButtonList << rButton;
-        if (i == 0) {
-            // select the first one
-            radioButtonList.at(i)->setChecked(true);
+
+        for (int i = 0; i < cmdList.size(); ++i) {
+            QFileInfo cmd = cmdList.at(i);
+            QString versionStrForRButton;
+            QString versionStr = Utility::GetClangFormatVersion(cmd);
+            // if we can not retrieve version information,
+            // we don't append them to the radio button command
+            if (!versionStr.isEmpty()) {
+                // add version information for this command
+                versionStrForRButton = " (" + tr("version") + ": " + versionStr + ")";
+            }
+            QRadioButton *rButton = new QRadioButton(cmd.absoluteFilePath() +
+                                                    versionStrForRButton,
+                                                    this);
+            rButton->setStyleSheet("font: italic");
+            radioButtonList << rButton;
+            if (i == 0) {
+                // select the first one
+                radioButtonList.at(i)->setChecked(true);
+            }
+            ui->gridLayout->addWidget(radioButtonList.at(i), 3 + i, 0);
         }
-        ui->gridLayout->addWidget(radioButtonList.at(i), 3 + i, 0);
+    } else {
+        // if no clang-format executables are found in the system path
+        ui->gridLayout->addWidget(new QLabel(tr("No clang-format executables are found in the system path"), this),
+                                  0, 0);
     }
+
     shouldSaveSettings = false;
     setManualCmdSetGroup(false);
     ui->okPushButton->setFocus();
