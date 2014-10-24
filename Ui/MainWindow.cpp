@@ -275,15 +275,20 @@ bool MainWindow::readSettings()
 
     } else {
         if (!QFileInfo(clangFormatExe).exists()) {
+            // If the path of the clang-format saved in the configuration
+            // is invalid (does not exit) display an error.
+            QMessageBox::warning(this,
+                                 tr("Error"),
+                                 QString(tr("The default clang-format executable"
+                                            " path(%1) does not exist.\n")).arg(clangFormatExe),
+                                 QMessageBox::Ok);
 
-            QFileInfoList clangFormatCmdList;
             // We get the installed clang-format command list in the system path.
             // Since we let the user to select the clang-format executable manually,
             // we can safely ignore the return of this function.
+            QFileInfoList clangFormatCmdList;
             (void) Utility::FindClangFormatCommand(clangFormatCmdList);
 
-            // If the path of the clang-format saved in the configuration
-            // is invalid (does not exit) display an error.
            ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
         } else {
             ClangFormatter::SetClangFormatCommand(clangFormatExe);

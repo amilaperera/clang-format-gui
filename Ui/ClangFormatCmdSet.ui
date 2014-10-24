@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Set clang-format binary</string>
+   <string>Set clang-format executable</string>
   </property>
   <property name="modal">
    <bool>false</bool>

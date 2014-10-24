@@ -68,7 +68,7 @@ QString ClangFormatCmdSet::GetSelectedFormatCmd()
     QString cmd = "";
     for (auto const *rButton : radioButtonList) {
         if (rButton->isChecked()) {
-            cmd = rButton->text();
+            cmd = rButton->text().split("(").at(0).trimmed();
             break;
         }
     }
@@ -112,7 +112,7 @@ void ClangFormatCmdSet::on_manualSetRButton_toggled(bool checked)
 void ClangFormatCmdSet::on_cmdBrowseToolButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Select clang-format command"),
+                                                    tr("Set clang-format executable path"),
                                                     QDir::homePath());
 
     if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
