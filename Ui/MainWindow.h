@@ -53,8 +53,8 @@ signals:
     void originalSrcLoaded();
 
 private:
-    const QString organization = "clang-format-GUI";
-    const QString application = "clang-format-GUI";
+    const QString organization = "clang-format-gui";
+    const QString application = "clang-format-gui";
 
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;

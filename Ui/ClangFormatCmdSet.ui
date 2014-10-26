@@ -107,7 +107,7 @@
        <item>
         <widget class="QCheckBox" name="checkBox">
          <property name="text">
-          <string>Set this binary default</string>
+          <string>Set this executable default</string>
          </property>
         </widget>
        </item>
