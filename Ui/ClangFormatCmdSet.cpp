@@ -24,15 +24,30 @@ ClangFormatCmdSet::ClangFormatCmdSet(const QFileInfoList &cmdList, QWidget *pare
             QFileInfo cmd = cmdList.at(i);
             QString versionStrForRButton;
             QString versionStr = Utility::GetClangFormatVersion(cmd);
-            // if we can not retrieve version information,
+
+            // If we can not retrieve version information,
             // we don't append them to the radio button command
             if (!versionStr.isEmpty()) {
                 // add version information for this command
                 versionStrForRButton = " (" + tr("version") + ": " + versionStr + ")";
             }
-            QRadioButton *rButton = new QRadioButton(cmd.absoluteFilePath() +
-                                                    versionStrForRButton,
-                                                    this);
+
+            QRadioButton *rButton = nullptr;
+#if defined(Q_OS_WIN)
+            // For windows, add separate string when we display the
+            // default clang-format command bundled with the application.
+            if (cmd.absolutePath() == QCoreApplication::applicationDirPath()) {
+                rButton = new QRadioButton(cmd.absoluteFilePath() +
+                                           versionStrForRButton +
+                                           " (default executable installed with clang-format-gui)",
+                                            this);
+            } else {
+#endif
+                rButton = new QRadioButton(cmd.absoluteFilePath() + versionStrForRButton,
+                                            this);
+#if defined(Q_OS_WIN)
+            }
+#endif
             rButton->setStyleSheet("font: italic");
             radioButtonList << rButton;
             if (i == 0) {

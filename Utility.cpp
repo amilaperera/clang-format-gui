@@ -7,8 +7,7 @@ static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList);
 bool FindClangFormatCommand(QFileInfoList &clangFormatCmdList)
 {
     bool ret = false;
-#if defined(Q_OS_WIN)
-#elif defined(Q_OS_LINUX)
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     ret = findClangFormatCommandLinux(clangFormatCmdList);
 #else
 #endif
@@ -19,9 +18,21 @@ static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList)
 {
     QStringList pathList = QString(qgetenv("PATH")).split(":",
                                                           QString::SkipEmptyParts);
+#if defined(Q_OS_WIN)
+    // In Windows we search the application directory too, in addition to
+    // the PATH variable.
+    // NOTE: We hope to bundle clang-format with the setup and therefore
+    // usually clang-format exists inside the application directory.
+    pathList.prepend(QCoreApplication::applicationDirPath());
+#endif
 
-    // this returns the number of removed duplicates and we're not interested
-    // in its value
+    if (pathList.empty()) {
+        qDebug() << "PATH variable is not set";
+        return false;
+    }
+
+    // removeDuplicates() returns the number of removed duplicates
+    // but we're not interested in its value
     (void) pathList.removeDuplicates();
 
     for (const auto &path : pathList) {
@@ -68,13 +79,13 @@ QString GetClangFormatVersion(const QFileInfo &clangFormatCmd)
     if (match.hasMatch()) {
         version = match.captured(1);
     }
+
     if (!version.isEmpty()) {
         qDebug() << "version of " << clangFormatCmd.absoluteFilePath() <<
                     " is " << version;
     } else {
         qDebug() << "Could not retrieve the clang-format version information";
     }
-
 
     return version;
 }
