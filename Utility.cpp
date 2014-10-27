@@ -16,14 +16,17 @@ bool FindClangFormatCommand(QFileInfoList &clangFormatCmdList)
 
 static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList)
 {
-    QStringList pathList = QString(qgetenv("PATH")).split(":",
-                                                          QString::SkipEmptyParts);
 #if defined(Q_OS_WIN)
+    QStringList pathList = QString(qgetenv("PATH")).split(";",
+                                                          QString::SkipEmptyParts);
     // In Windows we search the application directory too, in addition to
     // the PATH variable.
     // NOTE: We hope to bundle clang-format with the setup and therefore
     // usually clang-format exists inside the application directory.
     pathList.prepend(QCoreApplication::applicationDirPath());
+#elif defined(Q_OS_LINUX)
+    QStringList pathList = QString(qgetenv("PATH")).split(":",
+                                                          QString::SkipEmptyParts);
 #endif
 
     if (pathList.empty()) {
@@ -41,8 +44,12 @@ static bool findClangFormatCommandLinux(QFileInfoList &clangFormatCmdList)
                                                 QDir::Files | QDir::Executable);
 
         foreach (const QFileInfo &file, files) {
-            // omit diff command binaries
-            if (!(file.fileName().contains("diff", Qt::CaseInsensitive))) {
+            // omit clang-format-diff and clang-format-gui command binaries
+            // WARNING: not omitting clang-format-gui will create an infinite
+            // recursion, since this is used as a process to extract the version
+            // information.
+            if (!(file.fileName().contains("diff", Qt::CaseInsensitive)) &&
+                !(file.fileName().contains("gui", Qt::CaseInsensitive))) {
                 clangFormatCmdList << file;
                 qDebug() << "Command found : " << file.absoluteFilePath();
             }
