@@ -1,5 +1,4 @@
 #include "ClangFormatter.h"
-#include "FormatOptions.h"
 
 QString ClangFormatter::clangFormatCommand = "";
 
@@ -17,13 +16,13 @@ void ClangFormatter::SetClangFormatCommand(const QString &cmd)
     clangFormatCommand = cmd;
 }
 
-bool ClangFormatter::Execute(const FormatOptions *formatOptions)
+bool ClangFormatter::Execute(const QString &formatCmd)
 {
     output.clear();
 
     QProcess clangFormatProc;
 
-    clangFormatProc.start(formatOptions->GetClangFormatCommandStr());
+    clangFormatProc.start(formatCmd);
 
     if (!clangFormatProc.waitForStarted()) {
         return false;

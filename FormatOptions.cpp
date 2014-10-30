@@ -11,6 +11,7 @@ void FormatOptions::Reset()
     inputFile = "";
     style = LLVM;
     useTab = Never;
+    tabWidth = 4;
 }
 
 void FormatOptions::SetInputFile(const QString &in)
@@ -28,15 +29,25 @@ void FormatOptions::SetUseTab(FormatOptions::UseTab ut)
     useTab = ut;
 }
 
+void FormatOptions::SetTabWidth(int tw)
+{
+    tabWidth = tw;
+}
+
+QString FormatOptions::GetClangFormatDumpCommandStr()
+{
+    QString clangFormatDumpCommandStr;
+    constructClangFormatCommandStr(clangFormatDumpCommandStr);
+
+    return (clangFormatDumpCommandStr + " -dump-config");
+}
+
 QString FormatOptions::GetClangFormatCommandStr() const
 {
     QString clangFormatCommandStr;
-
     constructClangFormatCommandStr(clangFormatCommandStr);
 
-    if (inputFile.isEmpty()) {
-        // TODO: if no input files are set, we should throw exception
-    } else {
+    if (!inputFile.isEmpty()) {
         clangFormatCommandStr += (" \"" + inputFile + "\"");
     }
 
@@ -53,6 +64,7 @@ void FormatOptions::constructClangFormatCommandStr(QString &cmd) const
 
     setStyleInCommandStr(cmd);
     setUseTabInCommandStr(cmd);
+    setTabWidthCommandStr(cmd);
 
     cmd += "}\""; // ending configuration options
 }
@@ -109,5 +121,11 @@ void FormatOptions::setUseTabInCommandStr(QString &cmd) const
     }
 
     cmd += useTabStr;
+    addFormatOptionsSeparator(cmd);
+}
+
+void FormatOptions::setTabWidthCommandStr(QString &cmd) const
+{
+    cmd += "TabWidth: " + QString::number(tabWidth);
     addFormatOptionsSeparator(cmd);
 }

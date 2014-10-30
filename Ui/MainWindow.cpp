@@ -151,10 +151,12 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
  */
 void MainWindow::updateFormattedSrc()
 {
-    formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
+    // update the ui controls according to the current settings
+    updateUiControls();
 
+    formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
     ClangFormatter clangFormatter;
-    if (clangFormatter.Execute(formatOptions)) {
+    if (clangFormatter.Execute(formatOptions->GetClangFormatCommandStr())) {
         qDebug() << "clangFormatter process executed successfully";
     } else {
         qDebug() << "clangFormatter process execution failed";
@@ -172,6 +174,91 @@ void MainWindow::updateFormattedSrc()
 
     changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+}
+
+void MainWindow::updateUiControls()
+{
+    ClangFormatter clangFormatter;
+    if (clangFormatter.Execute(formatOptions->GetClangFormatDumpCommandStr())) {
+        qDebug() << "clangFormatter configuration dumped successfully";
+    } else {
+        qDebug() << "clangFormatter configuration dump failed";
+    }
+    qDebug() << "Configuration Dump";
+    qDebug() << clangFormatter.GetOutput();
+}
+
+bool MainWindow::readSettings()
+{
+    bool ret = true;
+    QSettings settings(organization, application);
+    qDebug() << "Reading settings from " << settings.fileName();
+
+    QString clangFormatExe = settings.value(Settings::ClangFormatExe).toString();
+    if (clangFormatExe.isEmpty()) {
+        qDebug() << "clangFormatExe is empty";
+
+        // Probably, this is the first time the application is started.
+        // We search the clang-format tool in standard locations.
+        QFileInfoList clangFormatCmdList;
+
+        // We get the installed clang-format command list in the system path.
+        // Since we let the user to select the clang-format executable manually,
+        // we can safely ignore the return of this function.
+        (void) Utility::FindClangFormatCommand(clangFormatCmdList);
+
+        // Displays the "Set clang-format-executable" dialog box
+        // and have the required file input from the user.
+       ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
+
+    } else {
+        if (!QFileInfo(clangFormatExe).exists()) {
+            // If the path of the clang-format saved in the configuration
+            // is invalid (does not exit) display an error.
+            QMessageBox::warning(this,
+                                 tr("Error"),
+                                 QString(tr("The default clang-format executable"
+                                            " path(%1) does not exist.\n")).arg(clangFormatExe),
+                                 QMessageBox::Ok);
+
+            // We get the installed clang-format command list in the system path.
+            // Since we let the user to select the clang-format executable manually,
+            // we can safely ignore the return of this function.
+            QFileInfoList clangFormatCmdList;
+            (void) Utility::FindClangFormatCommand(clangFormatCmdList);
+
+           ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
+        } else {
+            ClangFormatter::SetClangFormatCommand(clangFormatExe);
+        }
+    }
+    return ret;
+}
+
+bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
+                                             QSettings &settings)
+{
+    bool ret = true;
+    ClangFormatCmdSet clangFormatCmdSetDialog(cmdList);
+
+    // set as a modal dialog
+    if (clangFormatCmdSetDialog.exec()) {
+        // accepted
+        QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
+
+        ClangFormatter::SetClangFormatCommand(cmd);
+        if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
+            settings.setValue(Settings::ClangFormatExe, cmd);
+        }
+    } else {
+        // rejected
+        QMessageBox::critical(this,
+                                tr("Fatal Error"),
+                                tr("Application can not continue without "
+                                   "a proper clang-format executable being selected.\n"));
+        ret = false;
+    }
+    return ret;
 }
 
 /**
@@ -250,75 +337,12 @@ void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
     updateFormattedSrc();
 }
 
-bool MainWindow::readSettings()
+
+void MainWindow::on_tabWidthSpinBox_valueChanged(int arg1)
 {
-    bool ret = true;
-    QSettings settings(organization, application);
-    qDebug() << "Reading settings from " << settings.fileName();
-
-    QString clangFormatExe = settings.value(Settings::ClangFormatExe).toString();
-    if (clangFormatExe.isEmpty()) {
-        qDebug() << "clangFormatExe is empty";
-
-        // Probably, this is the first time the application is started.
-        // We search the clang-format tool in standard locations.
-        QFileInfoList clangFormatCmdList;
-
-        // We get the installed clang-format command list in the system path.
-        // Since we let the user to select the clang-format executable manually,
-        // we can safely ignore the return of this function.
-        (void) Utility::FindClangFormatCommand(clangFormatCmdList);
-
-        // Displays the "Set clang-format-executable" dialog box
-        // and have the required file input from the user.
-       ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
-
-    } else {
-        if (!QFileInfo(clangFormatExe).exists()) {
-            // If the path of the clang-format saved in the configuration
-            // is invalid (does not exit) display an error.
-            QMessageBox::warning(this,
-                                 tr("Error"),
-                                 QString(tr("The default clang-format executable"
-                                            " path(%1) does not exist.\n")).arg(clangFormatExe),
-                                 QMessageBox::Ok);
-
-            // We get the installed clang-format command list in the system path.
-            // Since we let the user to select the clang-format executable manually,
-            // we can safely ignore the return of this function.
-            QFileInfoList clangFormatCmdList;
-            (void) Utility::FindClangFormatCommand(clangFormatCmdList);
-
-           ret = ExecClangFormatCmdSetDialog(clangFormatCmdList, settings);
-        } else {
-            ClangFormatter::SetClangFormatCommand(clangFormatExe);
-        }
+    if (arg1 > 1 && arg1 < 17) {
+        formatOptions->SetTabWidth(arg1);
     }
-    return ret;
-}
 
-bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
-                                             QSettings &settings)
-{
-    bool ret = true;
-    ClangFormatCmdSet clangFormatCmdSetDialog(cmdList);
-
-    // set as a modal dialog
-    if (clangFormatCmdSetDialog.exec()) {
-        // accepted
-        QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
-
-        ClangFormatter::SetClangFormatCommand(cmd);
-        if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
-            settings.setValue(Settings::ClangFormatExe, cmd);
-        }
-    } else {
-        // rejected
-        QMessageBox::critical(this,
-                                tr("Fatal Error"),
-                                tr("Application can not continue without "
-                                   "a proper clang-format executable being selected.\n"));
-        ret = false;
-    }
-    return ret;
+    updateFormattedSrc();
 }

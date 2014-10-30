@@ -5,8 +5,6 @@
 #include <QDebug>
 #include <QObject>
 
-class FormatOptions;
-
 class ClangFormatter : public QObject
 {
     Q_OBJECT
@@ -14,7 +12,7 @@ public:
     explicit ClangFormatter(QObject *parent = 0);
     static QString GetClangFormatCommand();
     static void SetClangFormatCommand(const QString &cmd);
-    bool Execute(const FormatOptions *formatOptions);
+    bool Execute(const QString &formatCmd);
     QString GetOutput();
 
 signals:

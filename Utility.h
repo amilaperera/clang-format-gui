@@ -7,8 +7,8 @@
 #include <QDir>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-
-#include "ClangFormatter.h"
+#include <QProcess>
+#include <QDebug>
 
 namespace Utility
 {

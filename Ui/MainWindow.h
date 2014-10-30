@@ -49,6 +49,8 @@ private slots:
 
     void on_useTabsComboBox_currentIndexChanged(const QString &arg1);
 
+    void on_tabWidthSpinBox_valueChanged(int arg1);
+
 signals:
     void originalSrcLoaded();
 
@@ -74,6 +76,7 @@ private:
     void setStyleOptions(bool enableStatus);
     void setTabOptions(bool enableStatus);
     void updateFormattedSrc();
+    void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
 };
 

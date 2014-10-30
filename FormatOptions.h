@@ -28,6 +28,8 @@ public:
     void SetInputFile(const QString &in);
     void SetStyle(Style s);
     void SetUseTab(UseTab ut);
+    void SetTabWidth(int tw);
+    QString GetClangFormatDumpCommandStr();
     QString GetClangFormatCommandStr() const;
 
 signals:
@@ -38,12 +40,14 @@ private:
     QString inputFile;
     Style style;
     UseTab useTab;
+    int tabWidth;
 
 private:
     void addFormatOptionsSeparator(QString &cmd) const;
     void constructClangFormatCommandStr(QString &cmd) const;
     void setStyleInCommandStr(QString &cmd) const;
     void setUseTabInCommandStr(QString &cmd) const;
+    void setTabWidthCommandStr(QString &cmd) const;
 };
 
 #endif // FORMATOPTIONS_H
