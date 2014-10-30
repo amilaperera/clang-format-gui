@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setProgressVisibility(false);
+
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
     ui->verticalLayout_2->addWidget(originalSrcTextEdit);
@@ -104,6 +106,22 @@ void MainWindow::initializeFormatOptionsWidget()
 
     // disable tabs options settings at startup
     setTabOptions(false);
+}
+
+void MainWindow::setProgressVisibility(bool status)
+{
+    ui->previewingLabel->setEnabled(status);
+    ui->progressBar->setEnabled(status);
+
+    if (!status) {
+        ui->progressBar->setMinimum(0);
+        ui->progressBar->setMaximum(100);
+        ui->progressBar->setValue(0);
+    } else {
+        ui->progressBar->setMinimum(0);
+        ui->progressBar->setMaximum(100);
+        ui->progressBar->setValue(0);
+    }
 }
 
 void MainWindow::setStyleOptions(bool enableStatus)

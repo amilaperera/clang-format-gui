@@ -11,6 +11,7 @@
 #include <QSettings>
 #include <QFileInfoList>
 #include <QMessageBox>
+#include <QProgressBar>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -73,6 +74,7 @@ private:
     void changeToOriginalSrcTab();
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
+    void setProgressVisibility(bool status);
     void setStyleOptions(bool enableStatus);
     void setTabOptions(bool enableStatus);
     void updateFormattedSrc();
