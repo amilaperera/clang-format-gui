@@ -146,7 +146,7 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Preview File"),
                                                     defaultFileOpenDir,
-                                                    tr("Source Files (*.c *.cpp *.c++ *.cc *.h *.hpp)"));
+                                                    "Source Files (" + SrcFilePreviewer::GetCppExtListStr() +")");
 
     if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
         // open file name in the preview text area

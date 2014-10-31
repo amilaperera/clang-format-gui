@@ -23,6 +23,10 @@ public:
     QString GetFileNameExtension();
     QString GetFileContent();
 
+public:
+    static const QString GetCppExtListStr();
+    static bool IsFileExtCpp(const QString &fileExt);
+
 signals:
 
 public slots:
@@ -32,6 +36,9 @@ private:
     QString fileContent;
     QString fileExt;
     QsciLexer *lexer;
+
+private:
+    static const QStringList cppExtList;
 
 private:
     QString getFileNameExtension();

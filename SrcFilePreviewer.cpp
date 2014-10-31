@@ -1,5 +1,14 @@
 #include "SrcFilePreviewer.h"
 
+const QStringList SrcFilePreviewer::cppExtList = QStringList()
+                                                << "c"
+                                                << "cpp"
+                                                << "cc"
+                                                << "c++"
+                                                << "cxx"
+                                                << "h"
+                                                << "hpp";
+
 SrcFilePreviewer::SrcFilePreviewer(const QString &f, QObject *parent) :
     QObject(parent)
 {
@@ -68,6 +77,25 @@ QString SrcFilePreviewer::GetFileContent()
     return fileContent;
 }
 
+const QString SrcFilePreviewer::GetCppExtListStr()
+{
+    QString listStr;
+    foreach (const QString &str, SrcFilePreviewer::cppExtList) {
+        listStr += ("*." + str + " ");
+    }
+    return listStr.trimmed();
+}
+
+bool SrcFilePreviewer::IsFileExtCpp(const QString &fileExt)
+{
+    foreach (const QString &str, SrcFilePreviewer::cppExtList) {
+        if (str == fileExt) {
+            return true;
+        }
+    }
+    return false;
+}
+
 QString SrcFilePreviewer::getFileNameExtension()
 {
     QString ext = "";
@@ -79,13 +107,7 @@ QString SrcFilePreviewer::getFileNameExtension()
 
 QsciLexer *SrcFilePreviewer::createLexer()
 {
-    if (fileExt == "c" ||
-        fileExt == "cpp" ||
-        fileExt == "cc" ||
-        fileExt == "c++" ||
-        fileExt == "h" ||
-        fileExt == "hpp") {
-
+    if (SrcFilePreviewer::IsFileExtCpp(fileExt)) {
         return new QsciLexerCPP(this);
     }
 
