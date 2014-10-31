@@ -12,9 +12,11 @@
 #include <QFileInfoList>
 #include <QMessageBox>
 #include <QProgressBar>
+#include <QThread>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
+#include "SrcUpdater.h"
 #include "ClangFormatter.h"
 #include "FormatOptions.h"
 #include "Utility.h"
@@ -51,6 +53,8 @@ private slots:
     void on_useTabsComboBox_currentIndexChanged(const QString &arg1);
 
     void on_tabWidthSpinBox_valueChanged(int arg1);
+
+    void onSrcUpdaterOutputReady(const QString &cmd);
 
 signals:
     void originalSrcLoaded();

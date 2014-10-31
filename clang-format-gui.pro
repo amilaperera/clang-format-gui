@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     ClangFormatter.cpp \
     FormatOptions.cpp \
     Utility.cpp \
-    Settings.cpp
+    Settings.cpp \
+    SrcUpdater.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -78,7 +79,8 @@ HEADERS  += \
     SrcFilePreviewer.h \
     ClangFormatter.h \
     FormatOptions.h \
-    Settings.h
+    Settings.h \
+    SrcUpdater.h
 
 FORMS    += \
     Ui/ClangFormatCmdSet.ui \

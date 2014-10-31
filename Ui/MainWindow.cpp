@@ -119,7 +119,7 @@ void MainWindow::setProgressVisibility(bool status)
         ui->progressBar->setValue(0);
     } else {
         ui->progressBar->setMinimum(0);
-        ui->progressBar->setMaximum(100);
+        ui->progressBar->setMaximum(0);
         ui->progressBar->setValue(0);
     }
 }
@@ -173,8 +173,31 @@ void MainWindow::updateFormattedSrc()
     updateUiControls();
 
     formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
+
+    QString clangFormatCmdStr = formatOptions->GetClangFormatCommandStr();
+#if 0
     ClangFormatter clangFormatter;
-    if (clangFormatter.Execute(formatOptions->GetClangFormatCommandStr())) {
+#endif
+
+    QThread *srcUpdaterThread = new QThread;
+    SrcUpdater *srcUpdater = new SrcUpdater(clangFormatCmdStr);
+    srcUpdater->moveToThread(srcUpdaterThread);
+
+    connect(srcUpdaterThread, SIGNAL(started()),
+            srcUpdater, SLOT(start()));
+    connect(srcUpdater, SIGNAL(outputReady(QString)),
+            this, SLOT(onSrcUpdaterOutputReady(QString)));
+    connect(srcUpdater, SIGNAL(outputReady(QString)),
+            srcUpdaterThread, SLOT(quit()));
+    connect(srcUpdater, SIGNAL(outputReady(QString)),
+            srcUpdater, SLOT(deleteLater()));
+    connect(srcUpdater, SIGNAL(outputReady(QString)),
+            srcUpdaterThread, SLOT(deleteLater()));
+
+    setProgressVisibility(true);
+    srcUpdaterThread->start();
+#if 0
+    if (clangFormatter.Execute(clangFormatCmdStr)) {
         qDebug() << "clangFormatter process executed successfully";
     } else {
         qDebug() << "clangFormatter process execution failed";
@@ -192,6 +215,20 @@ void MainWindow::updateFormattedSrc()
 
     changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+#endif
+}
+
+void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
+{
+    if (formattedSrcPreviewer) {
+        delete formattedSrcPreviewer;
+    }
+    formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
+                                                 cmd);
+
+    changeToFormattedSrcTab();
+    formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+    setProgressVisibility(false);
 }
 
 void MainWindow::updateUiControls()
