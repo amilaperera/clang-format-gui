@@ -231,8 +231,8 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="../ResourcesIcons.qrc">
-               <normaloff>:/Resources/document-new-6.png</normaloff>:/Resources/document-new-6.png</iconset>
+              <iconset resource="../Resources.qrc">
+               <normaloff>:/Resources/icons/document-new-6.png</normaloff>:/Resources/icons/document-new-6.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -319,7 +319,7 @@
      <x>0</x>
      <y>0</y>
      <width>734</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
@@ -335,7 +335,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../ResourcesIcons.qrc"/>
+  <include location="../Resources.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -67,8 +67,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../ResourcesIcons.qrc">
-         <normaloff>:/Resources/document-open-5.png</normaloff>:/Resources/document-open-5.png</iconset>
+        <iconset resource="../Resources.qrc">
+         <normaloff>:/Resources/icons/document-open-5.png</normaloff>:/Resources/icons/document-open-5.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -166,7 +166,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../ResourcesIcons.qrc"/>
+  <include location="../Resources.qrc"/>
  </resources>
  <connections>
   <connection>

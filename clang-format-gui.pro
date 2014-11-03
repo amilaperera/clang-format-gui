@@ -101,4 +101,4 @@ unix {
 OTHER_FILES +=
 
 RESOURCES += \
-    ResourcesIcons.qrc
+    Resources.qrc
