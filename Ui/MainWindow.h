@@ -78,7 +78,6 @@ private:
     void changeToOriginalSrcTab();
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
-    void setProgressVisibility(bool status);
     void setStyleOptions(bool enableStatus);
     void setTabOptions(bool enableStatus);
     void updateFormattedSrc();

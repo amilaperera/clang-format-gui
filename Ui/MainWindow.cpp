@@ -7,8 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setProgressVisibility(false);
-
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
     ui->verticalLayout_2->addWidget(originalSrcTextEdit);
@@ -108,22 +106,6 @@ void MainWindow::initializeFormatOptionsWidget()
     setTabOptions(false);
 }
 
-void MainWindow::setProgressVisibility(bool status)
-{
-    ui->previewingLabel->setEnabled(status);
-    ui->progressBar->setEnabled(status);
-
-    if (!status) {
-        ui->progressBar->setMinimum(0);
-        ui->progressBar->setMaximum(100);
-        ui->progressBar->setValue(0);
-    } else {
-        ui->progressBar->setMinimum(0);
-        ui->progressBar->setMaximum(0);
-        ui->progressBar->setValue(0);
-    }
-}
-
 void MainWindow::setStyleOptions(bool enableStatus)
 {
     ui->llvmStyleRButton->setEnabled(enableStatus);
@@ -194,7 +176,6 @@ void MainWindow::updateFormattedSrc()
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             srcUpdaterThread, SLOT(deleteLater()));
 
-    setProgressVisibility(true);
     srcUpdaterThread->start();
 #if 0
     if (clangFormatter.Execute(clangFormatCmdStr)) {
@@ -228,7 +209,6 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
 
     changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
-    setProgressVisibility(false);
 }
 
 void MainWindow::updateUiControls()
