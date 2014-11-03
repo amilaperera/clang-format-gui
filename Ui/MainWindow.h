@@ -13,6 +13,8 @@
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QThread>
+#include <QMovie>
+#include <QLabel>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -63,6 +65,8 @@ private:
     const QString organization = "clang-format-gui";
     const QString application = "clang-format-gui";
 
+    QMovie *progressAnimation;
+    QLabel *progressLabel;
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
     SrcFilePreviewer *originalSrcPreviewer;

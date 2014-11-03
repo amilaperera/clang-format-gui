@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Resources/icons/document-new-6.png</file>
         <file>Resources/icons/document-open-5.png</file>
+        <file>Resources/gifs/ajax-loader.gif</file>
     </qresource>
 </RCC>

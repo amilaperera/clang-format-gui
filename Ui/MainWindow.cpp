@@ -7,6 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // set the progress indicator of the clang-format command execution.
+    progressAnimation = new QMovie(":/Resources/gifs/ajax-loader.gif");
+    progressLabel = new QLabel(this);
+    progressLabel->setMovie(progressAnimation);
+    progressLabel->setAlignment(Qt::AlignRight);
+    statusBar()->addPermanentWidget(progressLabel);
+
     // set QSciScintilla widget in the orignal source tab
     originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
     ui->verticalLayout_2->addWidget(originalSrcTextEdit);
@@ -157,9 +164,6 @@ void MainWindow::updateFormattedSrc()
     formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
 
     QString clangFormatCmdStr = formatOptions->GetClangFormatCommandStr();
-#if 0
-    ClangFormatter clangFormatter;
-#endif
 
     QThread *srcUpdaterThread = new QThread;
     SrcUpdater *srcUpdater = new SrcUpdater(clangFormatCmdStr);
@@ -177,26 +181,16 @@ void MainWindow::updateFormattedSrc()
             srcUpdaterThread, SLOT(deleteLater()));
 
     srcUpdaterThread->start();
-#if 0
-    if (clangFormatter.Execute(clangFormatCmdStr)) {
-        qDebug() << "clangFormatter process executed successfully";
-    } else {
-        qDebug() << "clangFormatter process execution failed";
-    }
 
-    /*
-     * formattedSrcPreviewer is created each time, the formatted source
-     * is updated.
-     */
-    if (formattedSrcPreviewer) {
-        delete formattedSrcPreviewer;
-    }
-    formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
-                                                 clangFormatter.GetOutput());
-
-    changeToFormattedSrcTab();
-    formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
-#endif
+    // disable the details panel, so that the user is unable to change any
+    // settings, while the command is being executed
+    ui->detailsGroupBox->setEnabled(false);
+    // change status bar message
+    statusBar()->showMessage(tr("Executing clang-format..."));
+    // show the label that contains the animation
+    progressLabel->show();
+    // start the progress animation
+    progressAnimation->start();
 }
 
 void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
@@ -209,6 +203,16 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
 
     changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+
+    // stop the animation
+    progressAnimation->stop();
+    // hide the label that contains the animation
+    progressLabel->hide();
+    // change the status bar message
+    statusBar()->showMessage(tr("Done"));
+    // finally, enable the details panel, so that the user can now try other
+    // settings.
+    ui->detailsGroupBox->setEnabled(true);
 }
 
 void MainWindow::updateUiControls()
