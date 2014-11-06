@@ -170,12 +170,14 @@ void MainWindow::updateFormattedSrc()
     srcUpdater->moveToThread(srcUpdaterThread);
 
     /*
-     * The same signal (started()) of srcUpdaterThread class
+     * The same signal started() of srcUpdaterThread class
+     * is connected to two slots i.e. onSrcUpdaterStarted() of MainWindow class and
+     * started() of srcUpdater class.
      *
      * NOTE: Below is an extrace from the current Qt documentation
-     * If several slots are connected to one signal,
+     * "If several slots are connected to one signal,
      * the slots will be executed one after the other,
-     * in the order they have been connected, when the signal is emitted.
+     * in the order they have been connected, when the signal is emitted."
      */
     connect(srcUpdaterThread, SIGNAL(started()),
             this, SLOT(onSrcUpdaterStarted()));
