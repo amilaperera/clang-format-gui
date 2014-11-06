@@ -169,19 +169,37 @@ void MainWindow::updateFormattedSrc()
     SrcUpdater *srcUpdater = new SrcUpdater(clangFormatCmdStr);
     srcUpdater->moveToThread(srcUpdaterThread);
 
+    /*
+     * The same signal (started()) of srcUpdaterThread class
+     *
+     * NOTE: Below is an extrace from the current Qt documentation
+     * If several slots are connected to one signal,
+     * the slots will be executed one after the other,
+     * in the order they have been connected, when the signal is emitted.
+     */
+    connect(srcUpdaterThread, SIGNAL(started()),
+            this, SLOT(onSrcUpdaterStarted()));
+
     connect(srcUpdaterThread, SIGNAL(started()),
             srcUpdater, SLOT(start()));
+
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             this, SLOT(onSrcUpdaterOutputReady(QString)));
+
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             srcUpdaterThread, SLOT(quit()));
+
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             srcUpdater, SLOT(deleteLater()));
+
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             srcUpdaterThread, SLOT(deleteLater()));
 
     srcUpdaterThread->start();
+}
 
+void MainWindow::onSrcUpdaterStarted()
+{
     // disable the details panel, so that the user is unable to change any
     // settings, while the command is being executed
     ui->detailsGroupBox->setEnabled(false);

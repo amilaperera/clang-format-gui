@@ -56,6 +56,7 @@ private slots:
 
     void on_tabWidthSpinBox_valueChanged(int arg1);
 
+    void onSrcUpdaterStarted();
     void onSrcUpdaterOutputReady(const QString &cmd);
 
 signals:
