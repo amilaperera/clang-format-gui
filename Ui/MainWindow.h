@@ -15,6 +15,7 @@
 #include <QThread>
 #include <QMovie>
 #include <QLabel>
+#include <QScrollBar>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -53,6 +54,9 @@ private slots:
 
     void on_tabWidthSpinBox_valueChanged(int arg1);
 
+    void onOriginalSrcEditLinesChanged();
+    void onFormattedSrcEditLinesChanged();
+
     void onSrcUpdaterStarted();
     void onSrcUpdaterOutputReady(const QString &cmd);
 
@@ -66,6 +70,10 @@ private:
     QLabel *progressLabel;
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
+    QScrollBar *originalSrcTextEditVScrollBar;
+    QScrollBar *formattedSrcTextEditVScrollBar;
+    int originalSrcTextEditLastVScrollBarPos;
+    int formattedSrcTextEditLastVScrollBarPos;
     SrcFilePreviewer *originalSrcPreviewer;
     SrcFilePreviewer *formattedSrcPreviewer;
     Ui::MainWindow *ui;
@@ -82,6 +90,7 @@ private:
     void updateFormattedSrc();
     void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
+    void onLinesChanged(QsciScintilla *textEdit);
 };
 
 #endif // MAINWINDOW_H

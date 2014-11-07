@@ -26,6 +26,22 @@ MainWindow::MainWindow(QWidget *parent) :
     initializeSrcTextEdit(originalSrcTextEdit);
     initializeSrcTextEdit(formattedSrcTextEdit);
 
+    // get pointers to the vertical scrollbars
+    originalSrcTextEditVScrollBar = originalSrcTextEdit->verticalScrollBar();
+    formattedSrcTextEditVScrollBar = formattedSrcTextEdit->verticalScrollBar();
+
+    // get values of vertical scrollbars.
+    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
+    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
+
+    // The following signals are emitted whenever the lines get changed.
+    // In this way we can set the margin width to display the line numbers
+    // properly.
+    connect(originalSrcTextEdit, SIGNAL(linesChanged()),
+            this, SLOT(onOriginalSrcEditLinesChanged()));
+    connect(formattedSrcTextEdit, SIGNAL(linesChanged()),
+            this, SLOT(onFormattedSrcEditLinesChanged()));
+
     // initialize SrcFilePreviewer objects
     originalSrcPreviewer = nullptr;
     formattedSrcPreviewer = nullptr;
@@ -74,6 +90,24 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
     textEdit->setReadOnly(true);
     // make the whitespaces visible with a centered dot
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
+    // set current encoding to Utf-8
+    textEdit->setUtf8(true);
+}
+
+void MainWindow::onOriginalSrcEditLinesChanged()
+{
+    onLinesChanged(originalSrcTextEdit);
+}
+
+void MainWindow::onFormattedSrcEditLinesChanged()
+{
+    onLinesChanged(formattedSrcTextEdit);
+}
+
+void MainWindow::onLinesChanged(QsciScintilla *textEdit)
+{
+    textEdit->setMarginLineNumbers(1, true);
+    textEdit->setMarginWidth(1, QString().setNum(textEdit->lines() * 10));
 }
 
 void MainWindow::setInitialSplitSizes()
@@ -94,7 +128,12 @@ void MainWindow::changeToOriginalSrcTab()
 
 void MainWindow::changeToFormattedSrcTab()
 {
-    ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
+    if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
+        ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
+        formattedSrcTextEditVScrollBar->setValue(originalSrcTextEditLastVScrollBarPos);
+    } else {
+        formattedSrcTextEditVScrollBar->setValue(formattedSrcTextEditLastVScrollBarPos);
+    }
 }
 
 void MainWindow::initializeFormatOptionsWidget()
@@ -138,6 +177,10 @@ void MainWindow::updateFormattedSrc()
 {
     // update the ui controls according to the current settings
     updateUiControls();
+
+    // we just store the values of scrollbar position
+    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
+    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
 
     formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
 
@@ -199,8 +242,9 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
     formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
                                                  cmd);
 
-    changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
+
+    changeToFormattedSrcTab();
 
     // stop the animation
     progressAnimation->stop();
