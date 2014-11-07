@@ -199,9 +199,7 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
     formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
                                                  cmd);
 
-    if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
-        changeToFormattedSrcTab();
-    }
+    changeToFormattedSrcTab();
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 
     // stop the animation
