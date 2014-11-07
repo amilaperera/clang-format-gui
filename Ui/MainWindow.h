@@ -62,6 +62,12 @@ private:
     const QString organization = "clang-format-gui";
     const QString application = "clang-format-gui";
 
+    int currentLineInOrig;
+    int currentIndexInOrig;
+
+    int currentLineInFormatted;
+    int currentIndexInFormatted;
+
     QMovie *progressAnimation;
     QLabel *progressLabel;
     QsciScintilla *originalSrcTextEdit;

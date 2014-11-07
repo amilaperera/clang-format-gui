@@ -149,8 +149,8 @@ void MainWindow::updateFormattedSrc()
 
     /*
      * The same signal started() of srcUpdaterThread class
-     * is connected to two slots i.e. onSrcUpdaterStarted() of MainWindow class and
-     * started() of srcUpdater class.
+     * is connected to two slots i.e. onSrcUpdaterStarted() of MainWindow class
+     * and started() of srcUpdater class.
      *
      * NOTE: Below is an extrace from the current Qt documentation
      * "If several slots are connected to one signal,
@@ -172,7 +172,7 @@ void MainWindow::updateFormattedSrc()
     connect(srcUpdater, SIGNAL(outputReady(QString)),
             srcUpdater, SLOT(deleteLater()));
 
-    connect(srcUpdater, SIGNAL(outputReady(QString)),
+    connect(srcUpdaterThread, SIGNAL(finished()),
             srcUpdaterThread, SLOT(deleteLater()));
 
     srcUpdaterThread->start();
@@ -199,7 +199,9 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
     formattedSrcPreviewer = new SrcFilePreviewer(originalSrcPreviewer->GetFileNameExtension(),
                                                  cmd);
 
-    changeToFormattedSrcTab();
+    if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
+        changeToFormattedSrcTab();
+    }
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 
     // stop the animation
