@@ -102,6 +102,7 @@ void MainWindow::initializeFormatOptionsWidget()
     // set 0th item in the list widget selected at startup
     ui->detailsStackWidget->setCurrentIndex(0);
 
+    // select the first item of the format options list widget
     ui->formatOptionsListWidget->item(0)->setSelected(true);
 
     // disable details group box at startup
@@ -312,10 +313,12 @@ void MainWindow::changeStyleOnRButtonToggle(FormatOptions::Style style)
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 {
     // if the user clicks on formatted src preview tab we disable open button
-    if (index == 1) {
-        ui->openOriginalSrcToolButton->setEnabled(false);
-    } else {
+    if (index == 0) {
+        // when the original source tab is selected
         ui->openOriginalSrcToolButton->setEnabled(true);
+    } else {
+        // when the formatted source tab is selected
+        ui->openOriginalSrcToolButton->setEnabled(false);
     }
 }
 
