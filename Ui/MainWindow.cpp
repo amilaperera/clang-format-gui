@@ -46,8 +46,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // create initialized formatOptions instance
     formatOptions = new FormatOptions(this);
 
-    connect(this, SIGNAL(originalSrcLoaded()), this, SLOT(on_originalSrcLoaded()));
-
     qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 }
 
@@ -106,34 +104,14 @@ void MainWindow::initializeFormatOptionsWidget()
 
     ui->formatOptionsListWidget->item(0)->setSelected(true);
 
-    // disable style options settings at startup
-    setStyleOptions(false);
-
-    // disable tabs options settings at startup
-    setTabOptions(false);
-}
-
-void MainWindow::setStyleOptions(bool enableStatus)
-{
-    ui->llvmStyleRButton->setEnabled(enableStatus);
-    ui->googleStyleRButton->setEnabled(enableStatus);
-    ui->chromiumStyleRButton->setEnabled(enableStatus);
-    ui->mozillaStyleRButton->setEnabled(enableStatus);
-    ui->webkitStyleRButton->setEnabled(enableStatus);
-}
-
-void MainWindow::setTabOptions(bool enableStatus)
-{
-    ui->useTabsLbl->setEnabled(enableStatus);
-    ui->useTabsComboBox->setEnabled(enableStatus);
-    ui->tabWidthLbl->setEnabled(enableStatus);
-    ui->tabWidthSpinBox->setEnabled(enableStatus);
+    // disable details group box at startup
+    ui->detailsGroupBox->setEnabled(false);
 }
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Preview File"),
+                                                    tr("Open Original Source File"),
                                                     defaultFileOpenDir,
                                                     "Source Files (" + SrcFilePreviewer::GetCppExtListStr() +")");
 
@@ -146,9 +124,8 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
         originalSrcPreviewer = new SrcFilePreviewer(fileName);
         originalSrcPreviewer->ShowPreview(originalSrcTextEdit);
 
-        // TODO: revisit this.
-        // A signal may not be necessary
-        emit originalSrcLoaded();
+        // enable the details group box on original source file load
+        ui->detailsGroupBox->setEnabled(true);
     }
 }
 
@@ -340,12 +317,6 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
     } else {
         ui->openOriginalSrcToolButton->setEnabled(true);
     }
-}
-
-void MainWindow::on_originalSrcLoaded()
-{
-    setStyleOptions(true);
-    setTabOptions(true);
 }
 
 void MainWindow::on_llvmStyleRButton_toggled(bool checked)

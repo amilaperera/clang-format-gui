@@ -42,10 +42,7 @@ public:
 
 private slots:
     void on_openOriginalSrcToolButton_clicked();
-
     void on_srcPreviewTabWidget_currentChanged(int index);
-    void on_originalSrcLoaded();
-
     void on_llvmStyleRButton_toggled(bool checked);
     void on_googleStyleRButton_toggled(bool checked);
     void on_chromiumStyleRButton_toggled(bool checked);
@@ -60,7 +57,6 @@ private slots:
     void onSrcUpdaterOutputReady(const QString &cmd);
 
 signals:
-    void originalSrcLoaded();
 
 private:
     const QString organization = "clang-format-gui";
@@ -83,8 +79,6 @@ private:
     void changeToOriginalSrcTab();
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
-    void setStyleOptions(bool enableStatus);
-    void setTabOptions(bool enableStatus);
     void updateFormattedSrc();
     void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
