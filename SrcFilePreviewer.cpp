@@ -54,10 +54,11 @@ SrcFilePreviewer::~SrcFilePreviewer()
 void SrcFilePreviewer::ShowPreview(QsciScintilla *textEdit)
 {
     if (lexer) {
+        textEdit->clear();
         textEdit->setLexer(lexer);
         textEdit->setText(fileContent);
     } else {
-        // TODO: consider throwing an exception
+        // TODO: throw an exception
         qDebug() << "Can't show preview because, the file extension is unrecognized by the application";
     }
 }

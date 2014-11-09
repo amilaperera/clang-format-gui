@@ -80,6 +80,9 @@ private:
     QString defaultFileOpenDir;
     FormatOptions *formatOptions;
 
+    bool userActionTriggered;
+    bool newOrigSrcLoaded;
+
 private:
     bool readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);
@@ -88,6 +91,7 @@ private:
     void changeToFormattedSrcTab();
     void initializeFormatOptionsWidget();
     void updateFormattedSrc();
+    void updateFormattedSrcByUserAction();
     void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
     void onLinesChanged(QsciScintilla *textEdit);

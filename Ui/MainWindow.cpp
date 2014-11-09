@@ -49,6 +49,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
 
+    // user action is not triggered to format the souce code
+    userActionTriggered = false;
+    // source file is not loaded on the original source tab
+    newOrigSrcLoaded = false;
+
     // set initial list widget & stack widget settings
     initializeFormatOptionsWidget();
 
@@ -90,7 +95,7 @@ void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
     textEdit->setReadOnly(true);
     // make the whitespaces visible with a centered dot
     textEdit->setWhitespaceVisibility(QsciScintilla::WsVisible);
-    // set current encoding to Utf-8
+    // set current encoding to UTF-8
     textEdit->setUtf8(true);
 }
 
@@ -130,6 +135,7 @@ void MainWindow::changeToFormattedSrcTab()
 {
     if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
         ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
+        // reset the vertical scrollbar position
         formattedSrcTextEditVScrollBar->setValue(originalSrcTextEditLastVScrollBarPos);
     } else {
         formattedSrcTextEditVScrollBar->setValue(formattedSrcTextEditLastVScrollBarPos);
@@ -164,8 +170,13 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
         originalSrcPreviewer = new SrcFilePreviewer(fileName);
         originalSrcPreviewer->ShowPreview(originalSrcTextEdit);
 
-        // enable the details group box on original source file load
+        // enable the details group box after the original source file is loaded
         ui->detailsGroupBox->setEnabled(true);
+
+        // New source file is loaded on to the orignal source tab.
+        // We hold the flag true only until the first user action is triggered
+        // or the formatted tab is selected for the first time
+        newOrigSrcLoaded = true;
     }
 }
 
@@ -218,7 +229,25 @@ void MainWindow::updateFormattedSrc()
     connect(srcUpdaterThread, SIGNAL(finished()),
             srcUpdaterThread, SLOT(deleteLater()));
 
+    /*
+     * Start the source updatation in a separate thread.
+     * This thread creates a 'clang-format' process and executes it
+     * synchronously.
+     *
+     * NOTE: The UI thread stays responsive.
+     * But it should be noted that we deliberately disable the controls in the
+     * 'Details' panel during the srcUpdaterThread
+     */
     srcUpdaterThread->start();
+}
+
+void MainWindow::updateFormattedSrcByUserAction()
+{
+    userActionTriggered = true;
+    // after a user action is triggered it is no more a new original source
+    // file
+    newOrigSrcLoaded = false;
+    updateFormattedSrc();
 }
 
 void MainWindow::onSrcUpdaterStarted()
@@ -344,25 +373,51 @@ bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
 
 /**
  * @brief MainWindow::changeStyleOnRButtonToggle
- * Set the new style in the formatOptions object.
+ * Set the new style in the formatOptions object and update the formatted source
+ * accordingly.
  *
  * @param style format style(LLVM, Google, Chromium, Mozilla, Webkit)
  */
 void MainWindow::changeStyleOnRButtonToggle(FormatOptions::Style style)
 {
     formatOptions->SetStyle(style);
-    updateFormattedSrc();
+    updateFormattedSrcByUserAction();
+}
+
+void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
+{
+    if (arg1 == "Never") {
+        formatOptions->SetUseTab(FormatOptions::Never);
+    } else if (arg1 == "For indentation") {
+        formatOptions->SetUseTab(FormatOptions::ForIndentation);
+    } else if (arg1 == "Always") {
+        formatOptions->SetUseTab(FormatOptions::Always);
+    }
+
+    updateFormattedSrcByUserAction();
+}
+
+void MainWindow::on_tabWidthSpinBox_valueChanged(int arg1)
+{
+    if (arg1 > 1 && arg1 < 17) {
+        formatOptions->SetTabWidth(arg1);
+    }
+
+    updateFormattedSrcByUserAction();
 }
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 {
-    // if the user clicks on formatted src preview tab we disable open button
     if (index == 0) {
-        // when the original source tab is selected
+        // when the original source tab is selected we enable 'open' button
         ui->openOriginalSrcToolButton->setEnabled(true);
     } else {
-        // when the formatted source tab is selected
+        // when the formatted source tab is selected we disable 'open' button
         ui->openOriginalSrcToolButton->setEnabled(false);
+        if (newOrigSrcLoaded && userActionTriggered) {
+            newOrigSrcLoaded = false;
+            updateFormattedSrc();
+        }
     }
 }
 
@@ -399,27 +454,4 @@ void MainWindow::on_webkitStyleRButton_toggled(bool checked)
     if (checked) {
         changeStyleOnRButtonToggle(FormatOptions::Webkit);
     }
-}
-
-void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
-{
-    if (arg1 == "Never") {
-        formatOptions->SetUseTab(FormatOptions::Never);
-    } else if (arg1 == "For indentation") {
-        formatOptions->SetUseTab(FormatOptions::ForIndentation);
-    } else if (arg1 == "Always") {
-        formatOptions->SetUseTab(FormatOptions::Always);
-    }
-
-    updateFormattedSrc();
-}
-
-
-void MainWindow::on_tabWidthSpinBox_valueChanged(int arg1)
-{
-    if (arg1 > 1 && arg1 < 17) {
-        formatOptions->SetTabWidth(arg1);
-    }
-
-    updateFormattedSrc();
 }
