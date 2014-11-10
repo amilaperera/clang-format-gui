@@ -72,7 +72,6 @@ private:
     QsciScintilla *formattedSrcTextEdit;
     QScrollBar *origSrcTextEditVSB;
     QScrollBar *formattedSrcTextEditVSB;
-    QWidget *srcTabBeforeUiUpdate;
     int origSrcTextEditLastVSBPos;
     int formattedSrcTextEditLastVSBPos;
     SrcFilePreviewer *originalSrcPreviewer;
@@ -98,7 +97,7 @@ private:
     void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
     void onLinesChanged(QsciScintilla *textEdit);
-    void storeStatusBeforeUpdate();
+    void storeVSBPos();
 };
 
 #endif // MAINWINDOW_H

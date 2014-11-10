@@ -21,9 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     originalSrcPreviewer = nullptr;
     formattedSrcPreviewer = nullptr;
 
-    // Since ui update has not occured we initialize to nullptr
-    srcTabBeforeUiUpdate = nullptr;
-
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
 
@@ -133,10 +130,8 @@ void MainWindow::onLinesChanged(QsciScintilla *textEdit)
     textEdit->setMarginWidth(1, QString().setNum(textEdit->lines() * 10));
 }
 
-void MainWindow::storeStatusBeforeUpdate()
+void MainWindow::storeVSBPos()
 {
-    srcTabBeforeUiUpdate = ui->srcPreviewTabWidget->currentWidget();
-
     // we just store the values of scrollbar position
     origSrcTextEditLastVSBPos = origSrcTextEditVSB->value();
     formattedSrcTextEditLastVSBPos = formattedSrcTextEditVSB->value();
@@ -160,12 +155,11 @@ void MainWindow::changeToOriginalSrcTab()
 
 void MainWindow::changeTabAndResetScrollPos()
 {
-    // Always change to formatted source tab after executing a command
-    ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
-
     // reset the vertical scrollbar position according to the positions
     // that we stored before executing clang-format command
-    if (srcTabBeforeUiUpdate == ui->originalSrcTab) {
+    if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
+        ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
+
         formattedSrcTextEditVSB->setValue(origSrcTextEditLastVSBPos);
     } else {
         formattedSrcTextEditVSB->setValue(formattedSrcTextEditLastVSBPos);
@@ -216,9 +210,6 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
  */
 void MainWindow::updateFormattedSrc()
 {
-    // store status before update (scrollbar pos, activated tab etc.)
-    storeStatusBeforeUpdate();
-
     // update the ui controls according to the current settings
     updateUiControls();
 
@@ -293,6 +284,9 @@ void MainWindow::onSrcUpdaterStarted()
 
 void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
 {
+    // store verticle scroll bar positions
+    storeVSBPos();
+
     if (formattedSrcPreviewer) {
         delete formattedSrcPreviewer;
     }
