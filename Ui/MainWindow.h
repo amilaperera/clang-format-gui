@@ -70,11 +70,11 @@ private:
     QLabel *progressLabel;
     QsciScintilla *originalSrcTextEdit;
     QsciScintilla *formattedSrcTextEdit;
-    QScrollBar *originalSrcTextEditVScrollBar;
-    QScrollBar *formattedSrcTextEditVScrollBar;
+    QScrollBar *origSrcTextEditVSB;
+    QScrollBar *formattedSrcTextEditVSB;
     QWidget *srcTabBeforeUiUpdate;
-    int originalSrcTextEditLastVScrollBarPos;
-    int formattedSrcTextEditLastVScrollBarPos;
+    int origSrcTextEditLastVSBPos;
+    int formattedSrcTextEditLastVSBPos;
     SrcFilePreviewer *originalSrcPreviewer;
     SrcFilePreviewer *formattedSrcPreviewer;
     Ui::MainWindow *ui;
@@ -85,6 +85,8 @@ private:
     bool newOrigSrcLoaded;
 
 private:
+    void setupProgressAnimation();
+    void setupTextEditWidgets();
     bool readSettings();
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();

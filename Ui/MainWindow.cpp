@@ -7,46 +7,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // set the progress indicator of the clang-format command execution.
-    progressAnimation = new QMovie(":/Resources/gifs/ajax-loader.gif");
-    progressLabel = new QLabel(this);
-    progressLabel->setMovie(progressAnimation);
-    progressLabel->setAlignment(Qt::AlignRight);
-    statusBar()->addPermanentWidget(progressLabel);
+    // set up the progress animation movie & label
+    setupProgressAnimation();
 
-    // set QSciScintilla widget in the orignal source tab
-    originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
-    ui->verticalLayout_2->addWidget(originalSrcTextEdit);
+    // set up the QScintilla2 text edit widget properties
+    setupTextEditWidgets();
 
-    // set QSciScintilla widget in the formatted source tab
-    formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
-    ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
-
-    // initialize QScintilla text edit widgets with certain common properties
-    initializeSrcTextEdit(originalSrcTextEdit);
-    initializeSrcTextEdit(formattedSrcTextEdit);
-
-    // get pointers to the vertical scrollbars
-    originalSrcTextEditVScrollBar = originalSrcTextEdit->verticalScrollBar();
-    formattedSrcTextEditVScrollBar = formattedSrcTextEdit->verticalScrollBar();
-
-    // get values of vertical scrollbars.
-    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
-    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
-
-    // The following signals are emitted whenever the lines get changed.
-    // In this way we can set the margin width to display the line numbers
-    // properly.
-    connect(originalSrcTextEdit, SIGNAL(linesChanged()),
-            this, SLOT(onOriginalSrcEditLinesChanged()));
-    connect(formattedSrcTextEdit, SIGNAL(linesChanged()),
-            this, SLOT(onFormattedSrcEditLinesChanged()));
+    // initialize scroll bar positions of the text widgets
+    origSrcTextEditLastVSBPos = 0;
+    formattedSrcTextEditLastVSBPos = 0;
 
     // initialize SrcFilePreviewer objects
     originalSrcPreviewer = nullptr;
     formattedSrcPreviewer = nullptr;
 
-    srcTabBeforeUiUpdate = ui->originalSrcTab;
+    // Since ui update has not occured we initialize to nullptr
+    srcTabBeforeUiUpdate = nullptr;
 
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
@@ -62,21 +38,61 @@ MainWindow::MainWindow(QWidget *parent) :
     // FIXME: Should we really do this with QStandardPaths?
     // initialize to home directory of the current user
     defaultFileOpenDir = QDir::homePath();
+    qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 
     // set focus to original source preview tab
     changeToOriginalSrcTab();
 
     // create initialized formatOptions instance
     formatOptions = new FormatOptions(this);
-
-    qDebug() << "Default Direcotory: " << defaultFileOpenDir;
 }
 
 MainWindow::~MainWindow()
 {
     // NOTE: QSciScintilla objects will be deleted by ownership concept
     delete originalSrcPreviewer;
+    // It is clearly mentioned in the documentation setMovie() does not take
+    // the ownership of the movie. Therefore the movie has to be deleted
+    // manually.
+    delete progressAnimation;
     delete ui;
+}
+
+void MainWindow::setupProgressAnimation()
+{
+    // set the progress indicator of the clang-format command execution.
+    progressAnimation = new QMovie(":/Resources/gifs/ajax-loader.gif");
+    progressLabel = new QLabel(this);
+    progressLabel->setMovie(progressAnimation);
+    progressLabel->setAlignment(Qt::AlignRight);
+    statusBar()->addPermanentWidget(progressLabel);
+}
+
+void MainWindow::setupTextEditWidgets()
+{
+    // set QSciScintilla widget in the orignal source tab
+    originalSrcTextEdit = new QsciScintilla(ui->originalSrcTab);
+    ui->verticalLayout_2->addWidget(originalSrcTextEdit);
+
+    // set QSciScintilla widget in the formatted source tab
+    formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
+    ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
+
+    // initialize QScintilla text edit widgets with certain common properties
+    initializeSrcTextEdit(originalSrcTextEdit);
+    initializeSrcTextEdit(formattedSrcTextEdit);
+
+    // get pointers to the vertical scrollbars
+    origSrcTextEditVSB = originalSrcTextEdit->verticalScrollBar();
+    formattedSrcTextEditVSB = formattedSrcTextEdit->verticalScrollBar();
+
+    // The following signals are emitted whenever the lines get changed.
+    // In this way we can set the margin width to display the line numbers
+    // properly.
+    connect(originalSrcTextEdit, SIGNAL(linesChanged()),
+            this, SLOT(onOriginalSrcEditLinesChanged()));
+    connect(formattedSrcTextEdit, SIGNAL(linesChanged()),
+            this, SLOT(onFormattedSrcEditLinesChanged()));
 }
 
 /**
@@ -122,8 +138,8 @@ void MainWindow::storeStatusBeforeUpdate()
     srcTabBeforeUiUpdate = ui->srcPreviewTabWidget->currentWidget();
 
     // we just store the values of scrollbar position
-    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
-    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
+    origSrcTextEditLastVSBPos = origSrcTextEditVSB->value();
+    formattedSrcTextEditLastVSBPos = formattedSrcTextEditVSB->value();
 
 }
 
@@ -148,9 +164,9 @@ void MainWindow::changeTabAndResetScrollPos()
     if (srcTabBeforeUiUpdate == ui->originalSrcTab) {
         ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
         // reset the vertical scrollbar position
-        formattedSrcTextEditVScrollBar->setValue(originalSrcTextEditLastVScrollBarPos);
+        formattedSrcTextEditVSB->setValue(origSrcTextEditLastVSBPos);
     } else {
-        formattedSrcTextEditVScrollBar->setValue(formattedSrcTextEditLastVScrollBarPos);
+        formattedSrcTextEditVSB->setValue(formattedSrcTextEditLastVSBPos);
     }
 }
 
@@ -301,6 +317,8 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
 
 void MainWindow::updateUiControls()
 {
+    // TODO: update the UI according to the clang command which is to be
+    // executed.
     ClangFormatter clangFormatter;
     if (clangFormatter.Execute(formatOptions->GetClangFormatDumpCommandStr())) {
         qDebug() << "clangFormatter configuration dumped successfully";
