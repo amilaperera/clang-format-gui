@@ -80,6 +80,7 @@ private:
     QString defaultFileOpenDir;
     FormatOptions *formatOptions;
 
+    bool isSrcUpdateInAction;
     bool userActionTriggered;
     bool newOrigSrcLoaded;
 
@@ -98,6 +99,8 @@ private:
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
     void onLinesChanged(QsciScintilla *textEdit);
     void storeVSBPos();
+    void updateUiControlsAtStart();
+    void updateUiControlsAtFinish();
 };
 
 #endif // MAINWINDOW_H

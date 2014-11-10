@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
 
+    isSrcUpdateInAction = false;
     // user action is not triggered to format the souce code
     userActionTriggered = false;
     // source file is not loaded on the original source tab
@@ -271,11 +272,12 @@ void MainWindow::updateFormattedSrcByUserAction()
 
 void MainWindow::onSrcUpdaterStarted()
 {
+    isSrcUpdateInAction = true;
+
     // change status bar message
     statusBar()->showMessage(tr("Executing clang-format..."));
 
-    // disable/enable ui components just before the update process
-    ui->detailsGroupBox->setEnabled(false);
+    updateUiControlsAtStart();
 
     // show the label that contains the animation
     progressLabel->show();
@@ -306,11 +308,27 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
     // hide the label that contains the animation
     progressLabel->hide();
 
-    // disable/enable ui components just after the update process
-    ui->detailsGroupBox->setEnabled(true);
+    updateUiControlsAtFinish();
 
     // change the status bar message
     statusBar()->showMessage(tr("Done"));
+
+    isSrcUpdateInAction = false;
+}
+
+void MainWindow::updateUiControlsAtStart()
+{
+    // disable/enable ui components just before the update process
+    ui->detailsGroupBox->setEnabled(false);
+    ui->openOriginalSrcToolButton->setEnabled(false);
+}
+
+void MainWindow::updateUiControlsAtFinish()
+{
+    // disable/enable ui components just after the update process
+    ui->detailsGroupBox->setEnabled(true);
+    ui->openOriginalSrcToolButton->setEnabled(ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab ?
+                                              true : false);
 }
 
 void MainWindow::updateUiControls()
@@ -437,15 +455,17 @@ void MainWindow::on_tabWidthSpinBox_valueChanged(int arg1)
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
 {
-    if (index == 0) {
-        // when the original source tab is selected we enable 'open' button
-        ui->openOriginalSrcToolButton->setEnabled(true);
-    } else {
-        // when the formatted source tab is selected we disable 'open' button
-        ui->openOriginalSrcToolButton->setEnabled(false);
-        if (newOrigSrcLoaded && userActionTriggered) {
-            newOrigSrcLoaded = false;
-            updateFormattedSrc();
+    if (!isSrcUpdateInAction) {
+        if (index == 0) {
+            // when the original source tab is selected we enable 'open' button
+            ui->openOriginalSrcToolButton->setEnabled(true);
+        } else {
+            // when the formatted source tab is selected we disable 'open' button
+            ui->openOriginalSrcToolButton->setEnabled(false);
+            if (newOrigSrcLoaded && userActionTriggered) {
+                newOrigSrcLoaded = false;
+                updateFormattedSrc();
+            }
         }
     }
 }
