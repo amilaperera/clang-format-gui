@@ -271,11 +271,12 @@ void MainWindow::updateFormattedSrcByUserAction()
 
 void MainWindow::onSrcUpdaterStarted()
 {
-    // disable the details panel, so that the user is unable to change any
-    // settings, while the command is being executed
-    ui->detailsGroupBox->setEnabled(false);
     // change status bar message
     statusBar()->showMessage(tr("Executing clang-format..."));
+
+    // disable/enable ui components just before the update process
+    ui->detailsGroupBox->setEnabled(false);
+
     // show the label that contains the animation
     progressLabel->show();
     // start the progress animation
@@ -304,11 +305,12 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
     progressAnimation->stop();
     // hide the label that contains the animation
     progressLabel->hide();
+
+    // disable/enable ui components just after the update process
+    ui->detailsGroupBox->setEnabled(true);
+
     // change the status bar message
     statusBar()->showMessage(tr("Done"));
-    // finally, enable the details panel, so that the user can now try other
-    // settings.
-    ui->detailsGroupBox->setEnabled(true);
 }
 
 void MainWindow::updateUiControls()
