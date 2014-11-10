@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     originalSrcPreviewer = nullptr;
     formattedSrcPreviewer = nullptr;
 
+    srcTabBeforeUiUpdate = ui->originalSrcTab;
+
     // set initial splitter sizes appropriately
     setInitialSplitSizes();
 
@@ -115,6 +117,16 @@ void MainWindow::onLinesChanged(QsciScintilla *textEdit)
     textEdit->setMarginWidth(1, QString().setNum(textEdit->lines() * 10));
 }
 
+void MainWindow::storeStatusBeforeUpdate()
+{
+    srcTabBeforeUiUpdate = ui->srcPreviewTabWidget->currentWidget();
+
+    // we just store the values of scrollbar position
+    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
+    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
+
+}
+
 void MainWindow::setInitialSplitSizes()
 {
     QList<int> splitter_2_sizes;
@@ -131,9 +143,9 @@ void MainWindow::changeToOriginalSrcTab()
     ui->srcPreviewTabWidget->setCurrentWidget(ui->originalSrcTab);
 }
 
-void MainWindow::changeToFormattedSrcTab()
+void MainWindow::changeTabAndResetScrollPos()
 {
-    if (ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab) {
+    if (srcTabBeforeUiUpdate == ui->originalSrcTab) {
         ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
         // reset the vertical scrollbar position
         formattedSrcTextEditVScrollBar->setValue(originalSrcTextEditLastVScrollBarPos);
@@ -186,12 +198,11 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
  */
 void MainWindow::updateFormattedSrc()
 {
+    // store status before update (scrollbar pos, activated tab etc.)
+    storeStatusBeforeUpdate();
+
     // update the ui controls according to the current settings
     updateUiControls();
-
-    // we just store the values of scrollbar position
-    originalSrcTextEditLastVScrollBarPos = originalSrcTextEditVScrollBar->value();
-    formattedSrcTextEditLastVScrollBarPos = formattedSrcTextEditVScrollBar->value();
 
     formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
 
@@ -244,8 +255,7 @@ void MainWindow::updateFormattedSrc()
 void MainWindow::updateFormattedSrcByUserAction()
 {
     userActionTriggered = true;
-    // after a user action is triggered it is no more a new original source
-    // file
+    // after a user action is triggered it is no more a new source file
     newOrigSrcLoaded = false;
     updateFormattedSrc();
 }
@@ -273,7 +283,10 @@ void MainWindow::onSrcUpdaterOutputReady(const QString &cmd)
 
     formattedSrcPreviewer->ShowPreview(formattedSrcTextEdit);
 
-    changeToFormattedSrcTab();
+    // after the formatting is done, we change to the formatted src tab,
+    // irrespective of the tab that we're currently in.
+    // We reset the scrollbar positions too.
+    changeTabAndResetScrollPos();
 
     // stop the animation
     progressAnimation->stop();

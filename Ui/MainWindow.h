@@ -72,6 +72,7 @@ private:
     QsciScintilla *formattedSrcTextEdit;
     QScrollBar *originalSrcTextEditVScrollBar;
     QScrollBar *formattedSrcTextEditVScrollBar;
+    QWidget *srcTabBeforeUiUpdate;
     int originalSrcTextEditLastVScrollBarPos;
     int formattedSrcTextEditLastVScrollBarPos;
     SrcFilePreviewer *originalSrcPreviewer;
@@ -88,13 +89,14 @@ private:
     void initializeSrcTextEdit(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void changeToOriginalSrcTab();
-    void changeToFormattedSrcTab();
+    void changeTabAndResetScrollPos();
     void initializeFormatOptionsWidget();
     void updateFormattedSrc();
     void updateFormattedSrcByUserAction();
     void updateUiControls();
     void changeStyleOnRButtonToggle(FormatOptions::Style style);
     void onLinesChanged(QsciScintilla *textEdit);
+    void storeStatusBeforeUpdate();
 };
 
 #endif // MAINWINDOW_H
