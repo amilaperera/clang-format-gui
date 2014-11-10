@@ -88,7 +88,7 @@ private:
     void setupProgressAnimation();
     void setupTextEditWidgets();
     bool readSettings();
-    void initializeSrcTextEdit(QsciScintilla *textEdit);
+    void setTextEditProperties(QsciScintilla *textEdit);
     void setInitialSplitSizes();
     void changeToOriginalSrcTab();
     void changeTabAndResetScrollPos();

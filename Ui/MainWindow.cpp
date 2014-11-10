@@ -78,13 +78,13 @@ void MainWindow::setupTextEditWidgets()
     formattedSrcTextEdit = new QsciScintilla(ui->formattedSrcTab);
     ui->verticalLayout_3->addWidget(formattedSrcTextEdit);
 
-    // initialize QScintilla text edit widgets with certain common properties
-    initializeSrcTextEdit(originalSrcTextEdit);
-    initializeSrcTextEdit(formattedSrcTextEdit);
-
     // get pointers to the vertical scrollbars
     origSrcTextEditVSB = originalSrcTextEdit->verticalScrollBar();
     formattedSrcTextEditVSB = formattedSrcTextEdit->verticalScrollBar();
+
+    // initialize QScintilla text edit widgets with certain common properties
+    setTextEditProperties(originalSrcTextEdit);
+    setTextEditProperties(formattedSrcTextEdit);
 
     // The following signals are emitted whenever the lines get changed.
     // In this way we can set the margin width to display the line numbers
@@ -107,7 +107,7 @@ bool MainWindow::PreCheck()
     return ret;
 }
 
-void MainWindow::initializeSrcTextEdit(QsciScintilla *textEdit)
+void MainWindow::setTextEditProperties(QsciScintilla *textEdit)
 {
     // make the editor read only
     textEdit->setReadOnly(true);
@@ -140,7 +140,6 @@ void MainWindow::storeStatusBeforeUpdate()
     // we just store the values of scrollbar position
     origSrcTextEditLastVSBPos = origSrcTextEditVSB->value();
     formattedSrcTextEditLastVSBPos = formattedSrcTextEditVSB->value();
-
 }
 
 void MainWindow::setInitialSplitSizes()
@@ -161,9 +160,12 @@ void MainWindow::changeToOriginalSrcTab()
 
 void MainWindow::changeTabAndResetScrollPos()
 {
+    // Always change to formatted source tab after executing a command
+    ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
+
+    // reset the vertical scrollbar position according to the positions
+    // that we stored before executing clang-format command
     if (srcTabBeforeUiUpdate == ui->originalSrcTab) {
-        ui->srcPreviewTabWidget->setCurrentWidget(ui->formattedSrcTab);
-        // reset the vertical scrollbar position
         formattedSrcTextEditVSB->setValue(origSrcTextEditLastVSBPos);
     } else {
         formattedSrcTextEditVSB->setValue(formattedSrcTextEditLastVSBPos);
