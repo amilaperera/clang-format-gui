@@ -44,9 +44,10 @@ void centerMainWindow(MainWindow *w)
 void loadQss(QApplication &a)
 {
     QFile file(":/Resources/qss/stylesheet.qss");
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        a.setStyleSheet(file.readAll());
-        file.close();
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
     }
+
+    QTextStream styleSheet(&file);
+    a.setStyleSheet(styleSheet.readAll());
 }
