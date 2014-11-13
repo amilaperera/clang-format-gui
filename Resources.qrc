@@ -3,5 +3,6 @@
         <file>Resources/icons/document-new-6.png</file>
         <file>Resources/icons/document-open-5.png</file>
         <file>Resources/gifs/ajax-loader.gif</file>
+        <file>Resources/qss/stylesheet.qss</file>
     </qresource>
 </RCC>

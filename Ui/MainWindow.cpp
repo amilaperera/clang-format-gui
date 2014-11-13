@@ -64,6 +64,7 @@ void MainWindow::setupProgressAnimation()
     progressLabel->setMovie(progressAnimation);
     progressLabel->setAlignment(Qt::AlignRight);
     statusBar()->addPermanentWidget(progressLabel);
+    progressLabel->hide();
 }
 
 void MainWindow::setupTextEditWidgets()

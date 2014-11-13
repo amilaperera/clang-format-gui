@@ -9,12 +9,14 @@ enum ExitStatus {
 };
 
 static void centerMainWindow(MainWindow *w);
+static void loadQss(QApplication &a);
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    loadQss(a);
 
+    MainWindow w;
     centerMainWindow(&w);
 
     w.show();
@@ -37,4 +39,14 @@ void centerMainWindow(MainWindow *w)
                    (screenHeight / 2) - (height / 2),
                    width,
                    height);
+}
+
+void loadQss(QApplication &a)
+{
+    QFile file(":/Resources/qss/stylesheet.qss");
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        a.setStyleSheet(file.readAll());
+        file.close();
+    }
 }
