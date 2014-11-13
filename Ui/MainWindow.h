@@ -16,6 +16,7 @@
 #include <QMovie>
 #include <QLabel>
 #include <QScrollBar>
+#include <QDesktopWidget>
 #include <Qsci/qsciscintilla.h>
 
 #include "SrcFilePreviewer.h"
@@ -38,6 +39,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool PreCheck();
+    void SetStatusReady();
+    void Center();
     bool ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
                                      QSettings &settings);
 

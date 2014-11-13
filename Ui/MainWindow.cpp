@@ -106,6 +106,24 @@ bool MainWindow::PreCheck()
     return ret;
 }
 
+void MainWindow::SetStatusReady()
+{
+    statusBar()->showMessage(tr("Ready"));
+}
+
+void MainWindow::Center()
+{
+    QDesktopWidget *desktop = QApplication::desktop();
+    int screenWidth = desktop->width();
+    int screenHeight = desktop->height();
+
+    int width = frameGeometry().width();
+    int height = frameGeometry().height();
+    setGeometry((screenWidth / 2) - (width / 2),
+               (screenHeight / 2) - (height / 2),
+               width, height);
+}
+
 void MainWindow::setTextEditProperties(QsciScintilla *textEdit)
 {
     // make the editor read only
@@ -203,6 +221,8 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
         // We hold the flag true only until the first user action is triggered
         // or the formatted tab is selected for the first time
         newOrigSrcLoaded = true;
+
+        statusBar()->showMessage(tr("New file loaded"));
     }
 }
 
