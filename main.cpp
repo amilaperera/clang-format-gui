@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-void loadQss(QApplication &a)
+static void loadQss(QApplication &a)
 {
     QFile file(":/Resources/qss/stylesheet.qss");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

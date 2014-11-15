@@ -12,7 +12,7 @@ StylesUiControl::StylesUiControl(QWidget *p, FormatOptions *f,
 
 StylesUiControl::~StylesUiControl()
 {
-
+    delete layoutWidget;
 }
 
 void StylesUiControl::setupUi()
@@ -52,43 +52,36 @@ void StylesUiControl::setupConnections()
             this, SLOT(on_webkitStyleRButton_toggled(bool)));
 }
 
-void StylesUiControl::changeStyleOnRButtonToggle(FormatOptions::Style style)
+void StylesUiControl::changeStyleOnRButtonToggle(bool checked,
+                                                 FormatOptions::Style style)
 {
-    formatOptions->SetStyle(style);
-    emit stylesUpdated();
+    if (checked) {
+        formatOptions->SetStyle(style);
+        emit stylesUpdated();
+    }
 }
 
 void StylesUiControl::on_llvmStyleRButton_toggled(bool checked)
 {
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::LLVM);
-    }
+    changeStyleOnRButtonToggle(checked, FormatOptions::LLVM);
 }
 
 void StylesUiControl::on_googleStyleRButton_toggled(bool checked)
 {
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Google);
-    }
+    changeStyleOnRButtonToggle(checked, FormatOptions::Google);
 }
 
 void StylesUiControl::on_chromiumStyleRButton_toggled(bool checked)
 {
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Chromium);
-    }
+    changeStyleOnRButtonToggle(checked, FormatOptions::Chromium);
 }
 
 void StylesUiControl::on_mozillaStyleRButton_toggled(bool checked)
 {
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Mozilla);
-    }
+    changeStyleOnRButtonToggle(checked, FormatOptions::Mozilla);
 }
 
 void StylesUiControl::on_webkitStyleRButton_toggled(bool checked)
 {
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Webkit);
-    }
+    changeStyleOnRButtonToggle(checked, FormatOptions::Webkit);
 }

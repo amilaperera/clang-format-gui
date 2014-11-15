@@ -97,4 +97,4 @@ QString GetClangFormatVersion(const QFileInfo &clangFormatCmd)
     return version;
 }
 
-}
+} // end of Utility namespace

@@ -36,7 +36,7 @@ private:
 private:
     void setupUi();
     void setupConnections();
-    void changeStyleOnRButtonToggle(FormatOptions::Style style);
+    void changeStyleOnRButtonToggle(bool checked, FormatOptions::Style style);
 };
 
 #endif // STYLESUICONTROL_H
