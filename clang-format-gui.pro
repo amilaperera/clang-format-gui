@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     FormatOptions.cpp \
     Utility.cpp \
     Settings.cpp \
-    SrcUpdater.cpp
+    SrcUpdater.cpp \
+    DetailsUiControl.cpp \
+    DetailsUiControls/StylesUiControl.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -80,7 +82,9 @@ HEADERS  += \
     ClangFormatter.h \
     FormatOptions.h \
     Settings.h \
-    SrcUpdater.h
+    SrcUpdater.h \
+    DetailsUiControl.h \
+    DetailsUiControls/StylesUiControl.h
 
 FORMS    += \
     Ui/ClangFormatCmdSet.ui \
@@ -100,5 +104,4 @@ unix {
 
 OTHER_FILES +=
 
-RESOURCES += \
-    Resources.qrc
+RESOURCES += Resources.qrc

@@ -46,6 +46,11 @@
             <string>Tabs</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Indentation</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -65,58 +70,10 @@
          <item row="0" column="0">
           <widget class="QStackedWidget" name="detailsStackWidget">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
-           <widget class="QWidget" name="styleOptionsPage">
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>185</width>
-               <height>126</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_2">
-              <item row="0" column="0">
-               <widget class="QRadioButton" name="llvmStyleRButton">
-                <property name="text">
-                 <string>LLVM coding standard</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QRadioButton" name="googleStyleRButton">
-                <property name="text">
-                 <string>Google's C++ style guide</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QRadioButton" name="chromiumStyleRButton">
-                <property name="text">
-                 <string>Chromium's style guide</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QRadioButton" name="mozillaStyleRButton">
-                <property name="text">
-                 <string>Mozilla's style guide</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QRadioButton" name="webkitStyleRButton">
-                <property name="text">
-                 <string>Webkit's style guide</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="TabsOptionsPage">
+           <widget class="QWidget" name="styleOptionsPage"/>
+           <widget class="QWidget" name="tabsOptionsPage">
             <widget class="QWidget" name="layoutWidget_1">
              <property name="geometry">
               <rect>
@@ -202,6 +159,7 @@
              </layout>
             </widget>
            </widget>
+           <widget class="QWidget" name="indentOptionspage"/>
           </widget>
          </item>
         </layout>

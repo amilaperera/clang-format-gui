@@ -43,6 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // create initialized formatOptions instance
     formatOptions = new FormatOptions(this);
+
+    // setup ui controls in 'Details' panel
+    setupDetailsUiControls();
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +97,17 @@ void MainWindow::setupTextEditWidgets()
             this, SLOT(onFormattedSrcEditLinesChanged()));
 }
 
+void MainWindow::setupDetailsUiControls()
+{
+    if (!formatOptions) {
+        formatOptions = new FormatOptions(this);
+    }
+
+    styles = new StylesUiControl(ui->styleOptionsPage, formatOptions);
+    connect(styles, SIGNAL(stylesUpdated()),
+            this, SLOT(onDetailsUiControlsUpdate()));
+}
+
 /**
  * @brief MainWindow::preCheck
  * Checks for several pre-requisites needed for the application to run
@@ -142,6 +156,11 @@ void MainWindow::onOriginalSrcEditLinesChanged()
 void MainWindow::onFormattedSrcEditLinesChanged()
 {
     onLinesChanged(formattedSrcTextEdit);
+}
+
+void MainWindow::onDetailsUiControlsUpdate()
+{
+    updateFormattedSrcByUserAction();
 }
 
 void MainWindow::onLinesChanged(QsciScintilla *textEdit)
@@ -439,19 +458,6 @@ bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
     return ret;
 }
 
-/**
- * @brief MainWindow::changeStyleOnRButtonToggle
- * Set the new style in the formatOptions object and update the formatted source
- * accordingly.
- *
- * @param style format style(LLVM, Google, Chromium, Mozilla, Webkit)
- */
-void MainWindow::changeStyleOnRButtonToggle(FormatOptions::Style style)
-{
-    formatOptions->SetStyle(style);
-    updateFormattedSrcByUserAction();
-}
-
 void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
 {
     if (arg1 == "Never") {
@@ -488,40 +494,5 @@ void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)
                 updateFormattedSrc();
             }
         }
-    }
-}
-
-void MainWindow::on_llvmStyleRButton_toggled(bool checked)
-{
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::LLVM);
-    }
-}
-
-void MainWindow::on_googleStyleRButton_toggled(bool checked)
-{
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Google);
-    }
-}
-
-void MainWindow::on_chromiumStyleRButton_toggled(bool checked)
-{
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Chromium);
-    }
-}
-
-void MainWindow::on_mozillaStyleRButton_toggled(bool checked)
-{
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Mozilla);
-    }
-}
-
-void MainWindow::on_webkitStyleRButton_toggled(bool checked)
-{
-    if (checked) {
-        changeStyleOnRButtonToggle(FormatOptions::Webkit);
     }
 }
