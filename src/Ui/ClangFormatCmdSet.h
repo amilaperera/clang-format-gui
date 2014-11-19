@@ -30,11 +30,8 @@ public:
 
 private slots:
     void on_checkBox_toggled(bool checked);
-
     void on_manualSetRButton_toggled(bool checked);
-
     void on_cmdBrowseToolButton_clicked();
-
     void on_cmdPathLineEdit_textChanged(const QString &arg1);
 
 private:
