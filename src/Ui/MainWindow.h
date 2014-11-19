@@ -28,6 +28,7 @@
 #include "Settings.h"
 #include "DetailsUiControl.h"
 #include "DetailsUiControls/StylesUiControl.h"
+#include "DetailsUiControls/TabsUiControl.h"
 
 namespace Ui {
 class MainWindow;
@@ -47,8 +48,6 @@ public:
                                      QSettings &settings);
 
 private slots:
-    void on_useTabsComboBox_currentIndexChanged(const QString &arg1);
-    void on_tabWidthSpinBox_valueChanged(int arg1);
     void on_openOriginalSrcToolButton_clicked();
     void on_srcPreviewTabWidget_currentChanged(int index);
     void onOriginalSrcEditLinesChanged();
@@ -83,6 +82,7 @@ private:
     bool newOrigSrcLoaded;
 
     StylesUiControl *styles;
+    TabsUiControl *tabs;
 
 private:
     void setupProgressAnimation();

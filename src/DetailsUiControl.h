@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QLayout>
 #include <QRadioButton>
+#include <QLabel>
+#include <QComboBox>
+#include <QSpinBox>
 #include <QMainWindow>
 #include <QObject>
 
@@ -14,7 +17,8 @@ class DetailsUiControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit DetailsUiControl(QObject *parent = 0);
+    explicit DetailsUiControl(QWidget *p, FormatOptions *f,
+                              QObject *parent = 0);
     ~DetailsUiControl();
     void SetMargins(QLayout *layout);
 
@@ -22,6 +26,10 @@ signals:
 
 public slots:
 
+protected:
+    QWidget *uiPage;
+    FormatOptions *formatOptions;
+    QWidget *layoutWidget;
 };
 
 #endif // DETAILSUICONTROL_H

@@ -2,22 +2,19 @@
 
 StylesUiControl::StylesUiControl(QWidget *p, FormatOptions *f,
                                  QObject *parent) :
-    DetailsUiControl(parent)
+    DetailsUiControl(p, f, parent)
 {
-    uiPage = p;
-    formatOptions = f;
     setupUi();
     setupConnections();
 }
 
 StylesUiControl::~StylesUiControl()
 {
-    delete layoutWidget;
+    delete vboxLayout;
 }
 
 void StylesUiControl::setupUi()
 {
-    layoutWidget = new QWidget(uiPage);
     vboxLayout = new QVBoxLayout(layoutWidget);
     SetMargins(vboxLayout);
 

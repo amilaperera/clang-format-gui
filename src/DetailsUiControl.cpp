@@ -1,13 +1,17 @@
 #include "DetailsUiControl.h"
 
-DetailsUiControl::DetailsUiControl(QObject *parent) :
+DetailsUiControl::DetailsUiControl(QWidget *p, FormatOptions *f,
+                                   QObject *parent) :
     QObject(parent)
 {
+    uiPage = p;
+    formatOptions = f;
+    layoutWidget = new QWidget(uiPage);
 }
 
 DetailsUiControl::~DetailsUiControl()
 {
-
+    delete layoutWidget;
 }
 
 void DetailsUiControl::SetMargins(QLayout *layout)

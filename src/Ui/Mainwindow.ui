@@ -70,95 +70,10 @@
          <item row="0" column="0">
           <widget class="QStackedWidget" name="detailsStackWidget">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="styleOptionsPage"/>
-           <widget class="QWidget" name="tabsOptionsPage">
-            <widget class="QWidget" name="layoutWidget_1">
-             <property name="geometry">
-              <rect>
-               <x>1</x>
-               <y>0</y>
-               <width>391</width>
-               <height>53</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_4">
-              <item row="0" column="0">
-               <widget class="QLabel" name="useTabsLbl">
-                <property name="text">
-                 <string>Use Tabs:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="useTabsComboBox">
-                <item>
-                 <property name="text">
-                  <string>Never</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>For indentation</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Always</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="tabWidthLbl">
-                <property name="text">
-                 <string>Tab Width:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QSpinBox" name="tabWidthSpinBox">
-                <property name="minimum">
-                 <number>2</number>
-                </property>
-                <property name="maximum">
-                 <number>16</number>
-                </property>
-                <property name="singleStep">
-                 <number>1</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </widget>
+           <widget class="QWidget" name="tabsOptionsPage"/>
            <widget class="QWidget" name="indentOptionspage"/>
           </widget>
          </item>

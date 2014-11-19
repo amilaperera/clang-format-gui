@@ -106,6 +106,10 @@ void MainWindow::setupDetailsUiControls()
     styles = new StylesUiControl(ui->styleOptionsPage, formatOptions);
     connect(styles, SIGNAL(stylesUpdated()),
             this, SLOT(onDetailsUiControlsUpdate()));
+
+    tabs = new TabsUiControl(ui->tabsOptionsPage, formatOptions);
+    connect(tabs, SIGNAL(stylesUpdated()),
+            this, SLOT(onDetailsUiControlsUpdate()));
 }
 
 /**
@@ -456,28 +460,6 @@ bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
         ret = false;
     }
     return ret;
-}
-
-void MainWindow::on_useTabsComboBox_currentIndexChanged(const QString &arg1)
-{
-    if (arg1 == "Never") {
-        formatOptions->SetUseTab(FormatOptions::Never);
-    } else if (arg1 == "For indentation") {
-        formatOptions->SetUseTab(FormatOptions::ForIndentation);
-    } else if (arg1 == "Always") {
-        formatOptions->SetUseTab(FormatOptions::Always);
-    }
-
-    updateFormattedSrcByUserAction();
-}
-
-void MainWindow::on_tabWidthSpinBox_valueChanged(int arg1)
-{
-    if (arg1 > 1 && arg1 < 17) {
-        formatOptions->SetTabWidth(arg1);
-    }
-
-    updateFormattedSrcByUserAction();
 }
 
 void MainWindow::on_srcPreviewTabWidget_currentChanged(int index)

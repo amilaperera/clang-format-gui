@@ -28,10 +28,6 @@ private:
     QRadioButton *mozillaStyleRButton;
     QRadioButton *webkitStyleRButton;
     QVBoxLayout *vboxLayout;
-    QWidget *layoutWidget;
-
-    QWidget *uiPage;
-    FormatOptions *formatOptions;
 
 private:
     void setupUi();

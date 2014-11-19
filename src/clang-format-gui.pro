@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     Settings.cpp \
     SrcUpdater.cpp \
     DetailsUiControl.cpp \
-    DetailsUiControls/StylesUiControl.cpp
+    DetailsUiControls/StylesUiControl.cpp \
+    DetailsUiControls/TabsUiControl.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -84,7 +85,8 @@ HEADERS  += \
     Settings.h \
     SrcUpdater.h \
     DetailsUiControl.h \
-    DetailsUiControls/StylesUiControl.h
+    DetailsUiControls/StylesUiControl.h \
+    DetailsUiControls/TabsUiControl.h
 
 FORMS    += \
     Ui/ClangFormatCmdSet.ui \
