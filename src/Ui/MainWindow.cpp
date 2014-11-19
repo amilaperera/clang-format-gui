@@ -256,7 +256,7 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 void MainWindow::updateFormattedSrc()
 {
     // update the ui controls according to the current settings
-    updateUiControls();
+    updateDetailsUiControls();
 
     formatOptions->SetInputFile(originalSrcPreviewer->GetFileName());
 
@@ -375,7 +375,7 @@ void MainWindow::updateUiControlsAtFinish()
                                               true : false);
 }
 
-void MainWindow::updateUiControls()
+void MainWindow::updateDetailsUiControls()
 {
     // TODO: update the UI according to the clang command which is to be
     // executed.

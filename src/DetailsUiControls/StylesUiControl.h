@@ -7,8 +7,7 @@ class StylesUiControl : public DetailsUiControl
 {
     Q_OBJECT
 public:
-    explicit StylesUiControl(QWidget *p, FormatOptions *f,
-                             QObject *parent = 0);
+    explicit StylesUiControl(QWidget *p, FormatOptions *f, QObject *parent = 0);
     ~StylesUiControl();
 
 signals:

@@ -96,7 +96,7 @@ private:
     void initializeFormatOptionsWidget();
     void updateFormattedSrc();
     void updateFormattedSrcByUserAction();
-    void updateUiControls();
+    void updateDetailsUiControls();
     void onLinesChanged(QsciScintilla *textEdit);
     void storeVSBPos();
     void updateUiControlsAtStart();
