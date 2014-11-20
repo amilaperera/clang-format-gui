@@ -26,6 +26,7 @@
 #include "Utility.h"
 #include "ClangFormatCmdSet.h"
 #include "Settings.h"
+#include "CFConfiguration.h"
 #include "DetailsUiControl.h"
 #include "DetailsUiControls/StylesUiControl.h"
 #include "DetailsUiControls/TabsUiControl.h"
@@ -101,6 +102,7 @@ private:
     void storeVSBPos();
     void updateUiControlsAtStart();
     void updateUiControlsAtFinish();
+    void setupDetailsUiControlsForCurrentConfig(const CFConfiguration &config);
 };
 
 #endif // MAINWINDOW_H

@@ -372,7 +372,7 @@ void MainWindow::updateUiControlsAtFinish()
     // disable/enable ui components just after the update process
     ui->detailsGroupBox->setEnabled(true);
     ui->openOriginalSrcToolButton->setEnabled(ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab ?
-                                              true : false);
+                                                  true : false);
 }
 
 void MainWindow::updateDetailsUiControls()
@@ -385,8 +385,18 @@ void MainWindow::updateDetailsUiControls()
     } else {
         qDebug() << "clangFormatter configuration dump failed";
     }
-    qDebug() << "Configuration Dump";
-    qDebug() << clangFormatter.GetOutput();
+
+    CFConfiguration currentConfig(clangFormatter.GetOutput());
+#ifdef QT_DEBUG
+    qDebug() << "Configurations:";
+    currentConfig.ToString();
+#endif
+    setupDetailsUiControlsForCurrentConfig(currentConfig);
+}
+
+void MainWindow::setupDetailsUiControlsForCurrentConfig(const CFConfiguration &config)
+{
+
 }
 
 bool MainWindow::readSettings()

@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     SrcUpdater.cpp \
     DetailsUiControl.cpp \
     DetailsUiControls/StylesUiControl.cpp \
-    DetailsUiControls/TabsUiControl.cpp
+    DetailsUiControls/TabsUiControl.cpp \
+    CFConfiguration.cpp
 
 HEADERS  += \
     Qsci/qsciabstractapis.h \
@@ -86,7 +87,8 @@ HEADERS  += \
     SrcUpdater.h \
     DetailsUiControl.h \
     DetailsUiControls/StylesUiControl.h \
-    DetailsUiControls/TabsUiControl.h
+    DetailsUiControls/TabsUiControl.h \
+    CFConfiguration.h
 
 FORMS    += \
     Ui/ClangFormatCmdSet.ui \
