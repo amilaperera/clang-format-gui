@@ -9,6 +9,7 @@ class TabsUiControl : public DetailsUiControl
 public:
     explicit TabsUiControl(QWidget *p, FormatOptions *f, QObject *parent = 0);
     ~TabsUiControl();
+    void setupUiForCurrentConfig(const CFConfiguration &c);
 
 signals:
     void stylesUpdated();
@@ -23,6 +24,8 @@ private:
     QLabel *tabWidthLbl;
     QSpinBox *tabWidthSpinBox;
     QGridLayout *gridLayout;
+
+    bool isSettingUiForCurrentConfig;
 
 private:
     void setupUi();

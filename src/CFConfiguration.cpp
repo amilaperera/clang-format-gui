@@ -35,3 +35,8 @@ void CFConfiguration::ToString() const
         }
     }
 }
+
+QMap<QString, QString> CFConfiguration::GetConfig() const
+{
+    return config;
+}

@@ -14,6 +14,7 @@ public:
     explicit CFConfiguration(QObject *parent = 0);
     explicit CFConfiguration(const QString &configStr, QObject *parent = 0);
     void ToString() const;
+    QMap<QString, QString> GetConfig() const;
 
 signals:
 

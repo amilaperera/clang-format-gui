@@ -5,6 +5,7 @@ TabsUiControl::TabsUiControl(QWidget *p, FormatOptions *f, QObject *parent) :
 {
     setupUi();
     setupConnections();
+    isSettingUiForCurrentConfig = false;
 }
 
 TabsUiControl::~TabsUiControl()
@@ -12,24 +13,44 @@ TabsUiControl::~TabsUiControl()
     delete gridLayout;
 }
 
+void TabsUiControl::setupUiForCurrentConfig(const CFConfiguration &c)
+{
+    isSettingUiForCurrentConfig = true;
+    QMap<QString, QString> config = c.GetConfig();
+    if (config.contains("UseTab")) {
+        useTabsComboBox->setCurrentText(config["UseTab"]);
+    }
+    if (config.contains("TabWidth")) {
+        tabWidthSpinBox->setValue(config["TabWidth"].toInt());
+    }
+}
+
 void TabsUiControl::on_useTabsComboBox_currentIndexChanged(const QString &text)
 {
-    if (text == "Never") {
-        formatOptions->SetUseTab(FormatOptions::Never);
-    } else if (text == "For indentation") {
-        formatOptions->SetUseTab(FormatOptions::ForIndentation);
-    } else if (text == "Always") {
-        formatOptions->SetUseTab(FormatOptions::Always);
+    if (!isSettingUiForCurrentConfig)
+    {
+        if (text == "Never") {
+            formatOptions->SetUseTab(FormatOptions::Never);
+        } else if (text == "For indentation") {
+            formatOptions->SetUseTab(FormatOptions::ForIndentation);
+        } else if (text == "Always") {
+            formatOptions->SetUseTab(FormatOptions::Always);
+        }
+        emit stylesUpdated();
     }
-    emit stylesUpdated();
+    isSettingUiForCurrentConfig = false;
 }
 
 void TabsUiControl::on_tabWidthSpinBox_valueChanged(int value)
 {
-    if (value >= 2 && value <= 16) {
-        formatOptions->SetTabWidth(value);
+    if (!isSettingUiForCurrentConfig)
+    {
+        if (value >= 2 && value <= 16) {
+            formatOptions->SetTabWidth(value);
+        }
+        emit stylesUpdated();
     }
-    emit stylesUpdated();
+    isSettingUiForCurrentConfig = false;
 }
 
 void TabsUiControl::setupUi()

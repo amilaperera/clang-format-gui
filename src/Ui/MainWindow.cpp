@@ -387,16 +387,18 @@ void MainWindow::updateDetailsUiControls()
     }
 
     CFConfiguration currentConfig(clangFormatter.GetOutput());
+
 #ifdef QT_DEBUG
     qDebug() << "Configurations:";
     currentConfig.ToString();
 #endif
+
     setupDetailsUiControlsForCurrentConfig(currentConfig);
 }
 
 void MainWindow::setupDetailsUiControlsForCurrentConfig(const CFConfiguration &config)
 {
-
+    tabs->setupUiForCurrentConfig(config);
 }
 
 bool MainWindow::readSettings()

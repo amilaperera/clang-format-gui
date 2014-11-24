@@ -11,6 +11,7 @@
 #include <QObject>
 
 #include "FormatOptions.h"
+#include "CFConfiguration.h"
 #include <ui_Mainwindow.h>
 
 class DetailsUiControl : public QObject
