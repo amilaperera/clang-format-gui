@@ -16,19 +16,21 @@ TabsUiControl::~TabsUiControl()
 void TabsUiControl::setupUiForCurrentConfig(const CFConfiguration &c)
 {
     isSettingUiForCurrentConfig = true;
+
     QMap<QString, QString> config = c.GetConfig();
     if (config.contains("UseTab")) {
+        // this emits currentIndexChanged() signal
         useTabsComboBox->setCurrentText(config["UseTab"]);
     }
     if (config.contains("TabWidth")) {
+        // this emits valueChanged() signal
         tabWidthSpinBox->setValue(config["TabWidth"].toInt());
     }
 }
 
 void TabsUiControl::on_useTabsComboBox_currentIndexChanged(const QString &text)
 {
-    if (!isSettingUiForCurrentConfig)
-    {
+    if (!isSettingUiForCurrentConfig) {
         if (text == "Never") {
             formatOptions->SetUseTab(FormatOptions::Never);
         } else if (text == "For indentation") {
@@ -43,8 +45,7 @@ void TabsUiControl::on_useTabsComboBox_currentIndexChanged(const QString &text)
 
 void TabsUiControl::on_tabWidthSpinBox_valueChanged(int value)
 {
-    if (!isSettingUiForCurrentConfig)
-    {
+    if (!isSettingUiForCurrentConfig) {
         if (value >= 2 && value <= 16) {
             formatOptions->SetTabWidth(value);
         }

@@ -245,7 +245,11 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
         // or the formatted tab is selected for the first time
         newOrigSrcLoaded = true;
 
-        statusBar()->showMessage(tr("New file loaded"));
+        statusBar()->showMessage(tr("New file loaded: ") +
+                                 Utility::TruncateFileName(fileName, 128));
+        setOrigSrcTabName(fileName);
+        ui->srcPreviewTabWidget->setTabToolTip(0, fileName);
+        ui->originalSrcTab->setToolTip(fileName);
     }
 }
 
@@ -399,6 +403,23 @@ void MainWindow::updateDetailsUiControls()
 void MainWindow::setupDetailsUiControlsForCurrentConfig(const CFConfiguration &config)
 {
     tabs->setupUiForCurrentConfig(config);
+}
+
+void MainWindow::setOrigSrcTabName(const QString &fName)
+{
+    ui->srcPreviewTabWidget->setTabText(0, tr("Original - ") +
+                                        getSrcTabName(fName));
+}
+
+void MainWindow::setFmtSrcTabName(const QString &fName)
+{
+    ui->srcPreviewTabWidget->setTabText(1, tr("Formatted - ") +
+                                        getSrcTabName(fName));
+}
+
+QString MainWindow::getSrcTabName(const QString &fName)
+{
+    return Utility::TruncateFileName(fName, 32);
 }
 
 bool MainWindow::readSettings()

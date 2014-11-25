@@ -97,4 +97,16 @@ QString GetClangFormatVersion(const QFileInfo &clangFormatCmd)
     return version;
 }
 
+QString TruncateFileName(const QString &fname, int len)
+{
+    const QString fNamePrependStr = "...";
+
+    QString truncFName = fname;
+    if (fname.size() > len) {
+        truncFName = fNamePrependStr +
+                            fname.right(len - fNamePrependStr.size());
+    }
+    return truncFName;
+}
+
 } // end of Utility namespace

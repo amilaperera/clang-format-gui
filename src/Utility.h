@@ -14,6 +14,7 @@ namespace Utility
 {
     bool FindClangFormatCommand(QFileInfoList &clangFormatCmdList);
     QString GetClangFormatVersion(const QFileInfo &clangFormatCmd);
+    QString TruncateFileName(const QString &fname, int len);
 }
 
 #endif // UTILITY_H
