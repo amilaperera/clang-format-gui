@@ -223,12 +223,15 @@ void MainWindow::initializeFormatOptionsWidget()
 
 void MainWindow::on_openOriginalSrcToolButton_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QString origFileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Original Source File"),
                                                     defaultFileOpenDir,
                                                     "Source Files (" + SrcFilePreviewer::GetCppExtListStr() +")");
 
-    if (!fileName.isEmpty() && QFileInfo(fileName).exists()) {
+    if (!origFileName.isEmpty() && QFileInfo(origFileName).exists()) {
+
+        fileName = origFileName;
+
         // open file name in the preview text area
         if (originalSrcPreviewer) {
             delete originalSrcPreviewer;
@@ -247,7 +250,7 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
 
         statusBar()->showMessage(tr("New file loaded: ") +
                                  Utility::TruncateFileName(fileName, 128));
-        setOrigSrcTabName(fileName);
+        setOrigSrcTabName();
         ui->srcPreviewTabWidget->setTabToolTip(0, fileName);
         ui->originalSrcTab->setToolTip(fileName);
     }
@@ -405,21 +408,21 @@ void MainWindow::setupDetailsUiControlsForCurrentConfig(const CFConfiguration &c
     tabs->setupUiForCurrentConfig(config);
 }
 
-void MainWindow::setOrigSrcTabName(const QString &fName)
+void MainWindow::setOrigSrcTabName()
 {
     ui->srcPreviewTabWidget->setTabText(0, tr("Original - ") +
-                                        getSrcTabName(fName));
+                                        getSrcTabName());
 }
 
-void MainWindow::setFmtSrcTabName(const QString &fName)
+void MainWindow::setFmtSrcTabName()
 {
     ui->srcPreviewTabWidget->setTabText(1, tr("Formatted - ") +
-                                        getSrcTabName(fName));
+                                        getSrcTabName());
 }
 
-QString MainWindow::getSrcTabName(const QString &fName)
+QString MainWindow::getSrcTabName()
 {
-    return Utility::TruncateFileName(fName, 32);
+    return Utility::TruncateFileName(fileName, 32);
 }
 
 bool MainWindow::readSettings()

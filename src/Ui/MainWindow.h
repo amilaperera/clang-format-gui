@@ -77,6 +77,7 @@ private:
     Ui::MainWindow *ui;
     QString defaultFileOpenDir;
     FormatOptions *formatOptions;
+    QString fileName;
 
     bool isSrcUpdateInAction;
     bool userActionTriggered;
@@ -103,9 +104,9 @@ private:
     void updateUiControlsAtStart();
     void updateUiControlsAtFinish();
     void setupDetailsUiControlsForCurrentConfig(const CFConfiguration &config);
-    void setOrigSrcTabName(const QString &fName);
-    void setFmtSrcTabName(const QString &fName);
-    QString getSrcTabName(const QString &fName);
+    void setOrigSrcTabName();
+    void setFmtSrcTabName();
+    QString getSrcTabName();
 };
 
 #endif // MAINWINDOW_H
