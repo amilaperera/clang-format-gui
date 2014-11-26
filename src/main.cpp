@@ -8,14 +8,14 @@ enum ExitStatus {
     PRE_CHECK_FAILED,
 };
 
-#if 0
+#ifdef LOAD_QSS
 static void loadQss(QApplication &a);
 #endif
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-#if 0
+#ifdef LOAD_QSS
     loadQss(a);
 #endif
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-#if 0
+#ifdef LOAD_QSS
 static void loadQss(QApplication &a)
 {
     QFile file(":/Resources/qss/stylesheet.qss");
