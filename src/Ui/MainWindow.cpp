@@ -251,8 +251,8 @@ void MainWindow::on_openOriginalSrcToolButton_clicked()
         statusBar()->showMessage(tr("New file loaded: ") +
                                  Utility::TruncateFileName(fileName, 128));
         setOrigSrcTabName();
-        ui->srcPreviewTabWidget->setTabToolTip(0, fileName);
-        ui->originalSrcTab->setToolTip(fileName);
+        ui->srcPreviewTabWidget->setTabToolTip(0, tr("Original - ") + fileName);
+        ui->originalSrcTab->setToolTip(tr("Original - ") + fileName);
     }
 }
 
@@ -380,6 +380,9 @@ void MainWindow::updateUiControlsAtFinish()
     ui->detailsGroupBox->setEnabled(true);
     ui->openOriginalSrcToolButton->setEnabled(ui->srcPreviewTabWidget->currentWidget() == ui->originalSrcTab ?
                                                   true : false);
+    setFmtSrcTabName();
+    ui->srcPreviewTabWidget->setTabToolTip(1, tr("Formatted - ") + fileName);
+    ui->formattedSrcTab->setToolTip(tr("Formatted - ") + fileName);
 }
 
 void MainWindow::updateDetailsUiControls()
