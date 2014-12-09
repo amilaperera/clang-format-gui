@@ -22,6 +22,7 @@ public slots:
 
 private:
     QMap<QString, QString> config;
+    void setConfigKeyValPair(const QString &k, const QString &v);
 };
 
 #endif // CFCONFIGURATION_H
