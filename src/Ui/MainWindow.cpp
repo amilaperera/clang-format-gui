@@ -110,6 +110,10 @@ void MainWindow::setupDetailsUiControls()
     tabs = new TabsUiControl(ui->tabsOptionsPage, formatOptions);
     connect(tabs, SIGNAL(stylesUpdated()),
             this, SLOT(onDetailsUiControlsUpdate()));
+
+    indents = new IndentUiControl(ui->indentOptionspage, formatOptions);
+    connect(indents, SIGNAL(stylesUpdated()),
+            this, SLOT(onDetailsUiControlsUpdate()));
 }
 
 /**

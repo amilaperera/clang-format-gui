@@ -30,6 +30,7 @@
 #include "DetailsUiControl.h"
 #include "DetailsUiControls/StylesUiControl.h"
 #include "DetailsUiControls/TabsUiControl.h"
+#include "DetailsUiControls/IndentUiControl.h"
 
 namespace Ui {
 class MainWindow;
@@ -85,6 +86,7 @@ private:
 
     StylesUiControl *styles;
     TabsUiControl *tabs;
+    IndentUiControl *indents;
 
 private:
     void setupProgressAnimation();

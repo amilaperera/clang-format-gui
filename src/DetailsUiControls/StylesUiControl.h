@@ -11,7 +11,6 @@ public:
     ~StylesUiControl();
 
 signals:
-    void stylesUpdated();
 
 private slots:
     void on_llvmStyleRButton_toggled(bool checked);

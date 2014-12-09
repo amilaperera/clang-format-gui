@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLayout>
 #include <QRadioButton>
+#include <QCheckBox>
 #include <QLabel>
 #include <QComboBox>
 #include <QSpinBox>
@@ -24,6 +25,7 @@ public:
     void SetMargins(QLayout *layout);
 
 signals:
+    void stylesUpdated();
 
 public slots:
 

@@ -12,7 +12,6 @@ public:
     void setupUiForCurrentConfig(const CFConfiguration &c);
 
 signals:
-    void stylesUpdated();
 
 private slots:
     void on_useTabsComboBox_currentIndexChanged(const QString &text);
