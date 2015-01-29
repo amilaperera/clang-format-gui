@@ -490,17 +490,24 @@ bool MainWindow::ExecClangFormatCmdSetDialog(const QFileInfoList &cmdList,
         // accepted
         QString cmd = clangFormatCmdSetDialog.GetSelectedFormatCmd();
 
-        ClangFormatter::SetClangFormatCommand(cmd);
-        if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
-            settings.setValue(Settings::ClangFormatExe, cmd);
+        if (cmd.isEmpty()) {
+            ret = false;
+        } else {
+            ClangFormatter::SetClangFormatCommand(cmd);
+            if (clangFormatCmdSetDialog.GetSaveSettingsStatus()) {
+                settings.setValue(Settings::ClangFormatExe, cmd);
+            }
         }
     } else {
         // rejected
-        QMessageBox::critical(this,
-                                tr("Fatal Error"),
-                                tr("Application can not continue without "
-                                   "a proper clang-format executable being selected.\n"));
         ret = false;
+    }
+
+    if (!ret) {
+        QMessageBox::critical(this,
+                              tr("Fatal Error"),
+                              tr("Application can not continue without "
+                                 "a proper clang-format executable being selected.\n"));
     }
     return ret;
 }
