@@ -29,56 +29,6 @@ SOURCES += main.cpp\
     DetailsUiControls/IndentUiControl.cpp
 
 HEADERS  += \
-    Qsci/qsciabstractapis.h \
-    Qsci/qsciapis.h \
-    Qsci/qscicommand.h \
-    Qsci/qscicommandset.h \
-    Qsci/qscidocument.h \
-    Qsci/qsciglobal.h \
-    Qsci/qscilexer.h \
-    Qsci/qscilexeravs.h \
-    Qsci/qscilexerbash.h \
-    Qsci/qscilexerbatch.h \
-    Qsci/qscilexercmake.h \
-    Qsci/qscilexercoffeescript.h \
-    Qsci/qscilexercpp.h \
-    Qsci/qscilexercsharp.h \
-    Qsci/qscilexercss.h \
-    Qsci/qscilexercustom.h \
-    Qsci/qscilexerd.h \
-    Qsci/qscilexerdiff.h \
-    Qsci/qscilexerfortran.h \
-    Qsci/qscilexerfortran77.h \
-    Qsci/qscilexerhtml.h \
-    Qsci/qscilexeridl.h \
-    Qsci/qscilexerjava.h \
-    Qsci/qscilexerjavascript.h \
-    Qsci/qscilexerlua.h \
-    Qsci/qscilexermakefile.h \
-    Qsci/qscilexermatlab.h \
-    Qsci/qscilexeroctave.h \
-    Qsci/qscilexerpascal.h \
-    Qsci/qscilexerperl.h \
-    Qsci/qscilexerpo.h \
-    Qsci/qscilexerpostscript.h \
-    Qsci/qscilexerpov.h \
-    Qsci/qscilexerproperties.h \
-    Qsci/qscilexerpython.h \
-    Qsci/qscilexerruby.h \
-    Qsci/qscilexerspice.h \
-    Qsci/qscilexersql.h \
-    Qsci/qscilexertcl.h \
-    Qsci/qscilexertex.h \
-    Qsci/qscilexerverilog.h \
-    Qsci/qscilexervhdl.h \
-    Qsci/qscilexerxml.h \
-    Qsci/qscilexeryaml.h \
-    Qsci/qscimacro.h \
-    Qsci/qsciprinter.h \
-    Qsci/qsciscintilla.h \
-    Qsci/qsciscintillabase.h \
-    Qsci/qscistyle.h \
-    Qsci/qscistyledtext.h \
     Ui/MainWindow.h \
     Ui/ClangFormatCmdSet.h \
     SrcFilePreviewer.h \
@@ -104,7 +54,7 @@ win32 {
 }
 
 unix {
-    LIBS += -L/usr/lib/x86_64-linux-gnu -lqscintilla2
+    LIBS += -L/usr/lib -lqscintilla2
     CONFIG += qscintilla2
 }
 
